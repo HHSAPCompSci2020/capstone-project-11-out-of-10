@@ -51,6 +51,8 @@ public class DrawingSurface extends PApplet {
 
 	public void draw() {
 		
+		pushMatrix();
+		
 		translate(WIDTH/2, HEIGHT/2);
 		translate(-(float)player1.rect.x, -(float)player1.rect.y);
 		
@@ -60,6 +62,8 @@ public class DrawingSurface extends PApplet {
 		player1.draw(this);
 		for (Sprite s : obstacles)
 			s.draw(this);
+		
+		popMatrix();
 	}
 	
 	public void keyPressed() {
