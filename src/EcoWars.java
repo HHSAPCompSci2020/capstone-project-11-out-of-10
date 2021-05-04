@@ -7,6 +7,7 @@ import processing.core.PApplet;
 
 public class EcoWars {
 
+	
 	public static void main(String[] args) {
 		
 		DrawingSurface drawing = new DrawingSurface();
