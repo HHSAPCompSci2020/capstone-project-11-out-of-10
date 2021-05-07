@@ -1,23 +1,45 @@
 import processing.core.PImage;
 
+/**
+ * Class that represents a player in EcoWars. 
+ * Can move, stores current balance, and deals with collision.
+ * @author nirreiter
+ *
+ */
 public class Player extends Sprite {
 	
+	/**
+	 * Width of a Player (both sprite and collision)
+	 */
 	public static final int WIDTH = 32;
-	public static final int HEIGHT = 64;
-	public static PImage playerImage;
 	
+	/**
+	 * Height of a Player (both sprite and collision)
+	 */
+	public static final int HEIGHT = 64;
+	
+	/**
+	 * Distance a player travels on every frame of movement
+	 */
 	public static final int MOVE_SPEED = 5;
 	
 	private double balance;
 	
-	public Player(int x, int y) { 
-		super(x, y, WIDTH, HEIGHT, playerImage);
+	/**
+	 * Creates a new Player with starting position and graphics.
+	 * @param x The x-position to start
+	 * @param y The y-position to start
+	 * @param image The graphic for the Player
+	 */
+	public Player(int x, int y, PImage image) { 
+		super(x, y, WIDTH, HEIGHT, image);
 	}
 	
-	public static void loadImage(PImage image) {
-		playerImage = image;
-	}
-	
+	/**
+	 * Changes the Player's velocity. 
+	 * Always travels at the same speed (Player.MOVE_SPEED), no matter the angle
+	 * @param angle The angle to walk at
+	 */
 	public void walk(double angle) {
 		velocityX = MOVE_SPEED*Math.cos(angle);
 		velocityY = -MOVE_SPEED*Math.sin(angle);
@@ -25,6 +47,9 @@ public class Player extends Sprite {
 	
 	@Override
 	public void update(DrawingSurface game) {
+		velocityX = 0;
+		velocityY = 0;
+		
 		if (game.isKeyHeld(DrawingSurface.RIGHT))
 			walk(0);
 		
@@ -36,11 +61,6 @@ public class Player extends Sprite {
 		
 		else if (game.isKeyHeld(DrawingSurface.DOWN))
 			walk(1.5 * Math.PI);
-		
-		else {
-			velocityX = 0;
-			velocityY = 0;
-		}
 		
 		super.update(game);
 		

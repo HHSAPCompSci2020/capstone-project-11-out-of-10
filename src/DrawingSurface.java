@@ -52,9 +52,8 @@ public class DrawingSurface extends PApplet {
 		lblOut = new GLabel(this, 50, 30, 560, 20, "");
 		animalDrawn = 0;
 		
-		Player.loadImage(loadImage("player.png"));
-		player1 = new Player(30, 30);
-		obstacles.add(new Sprite(100, 100, 50, 50, Player.playerImage));
+		player1 = new Player(30, 30, loadImage("player.png"));
+		obstacles.add(new Sprite(100, 100, 50, 50, loadImage("obstacle.png")));
 	}
 
 	public void draw() {
@@ -65,15 +64,18 @@ public class DrawingSurface extends PApplet {
 		translate(-(float)player1.rect.x, -(float)player1.rect.y);
 		
 		background(0, 255, 255);
-		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + "number";
-		fill(0);
-		text(text, -365, -250);
 		player1.update(this);
 		player1.draw(this);
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
 		popMatrix();
+		
+		/* ALL UI ELEMENTS GO BELOW HERE */
+		
+		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + "number";
+		fill(0);
+		text(text, 10, 20);
 	}
 	
 	public void keyPressed() {
