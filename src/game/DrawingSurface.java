@@ -1,3 +1,4 @@
+package game;
 import java.util.ArrayList;
 
 import g4p_controls.GAlign;
@@ -6,6 +7,8 @@ import g4p_controls.GEvent;
 import g4p_controls.GLabel;
 
 import processing.core.PApplet;
+import sprite.Player;
+import sprite.Sprite;
 
 public class DrawingSurface extends PApplet {
 
@@ -77,7 +80,7 @@ public class DrawingSurface extends PApplet {
 		
 		// Center the game field on the player
 		translate(WIDTH/2, HEIGHT/2);
-		translate(-(float)player1.rect.x, -(float)player1.rect.y);
+		translate(-(float)player1.getX(), -(float)player1.getY());
 		
 		fill(150, 100, 0);
 		rect(0, 0, gameAreaWidth, gameAreaHeight); // map background

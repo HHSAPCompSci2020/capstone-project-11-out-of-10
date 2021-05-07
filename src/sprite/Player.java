@@ -1,3 +1,6 @@
+package sprite;
+
+import game.DrawingSurface;
 import processing.core.PImage;
 
 /**

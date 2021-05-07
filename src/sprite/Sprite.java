@@ -1,5 +1,8 @@
+package sprite;
+
 import java.awt.geom.Rectangle2D;
 
+import game.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -83,5 +86,21 @@ public class Sprite {
 			drawing.rect((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
 		}
 		drawing.popStyle();
+	}
+	
+	public double getX() {
+		return rect.x;
+	}
+	
+	public double getY() {
+		return rect.y;
+	}
+	
+	public double getWidth() {
+		return rect.width;
+	}
+	
+	public double getHeight() {
+		return rect.height;
 	}
 }
