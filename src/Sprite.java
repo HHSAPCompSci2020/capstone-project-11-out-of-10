@@ -3,8 +3,15 @@ import java.awt.geom.Rectangle2D;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * Represents an object in the game with a position, image. Contains collision checks.
+ * @author Nir Reiter
+ *
+ */
 public class Sprite {
 
+	public static boolean debug = true;
+	
 	protected PImage image;
 	protected Rectangle2D.Double rect;
 	protected double velocityX, velocityY;
@@ -67,6 +74,14 @@ public class Sprite {
 	 * @param drawing the PApplet to draw this Sprite on.
 	 */
 	public void draw(PApplet drawing) {
+		drawing.pushStyle();
 		drawing.image(image, (int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+		
+		if (debug) {
+			drawing.noFill();
+			drawing.stroke(255, 0, 0);
+			drawing.rect((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+		}
+		drawing.popStyle();
 	}
 }

@@ -3,7 +3,7 @@ import processing.core.PImage;
 /**
  * Class that represents a player in EcoWars. 
  * Can move, stores current balance, and deals with collision.
- * @author nirreiter
+ * @author Nir Reiter
  *
  */
 public class Player extends Sprite {
@@ -62,7 +62,7 @@ public class Player extends Sprite {
 		else if (game.isKeyHeld(DrawingSurface.DOWN))
 			walk(1.5 * Math.PI);
 		
-		/* Collision works separately on X and Y, so if Player collides while moving diagonally,
+		/* Collision works separately on X and Y, so if a Player collides while moving diagonally,
 		 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
 		 */
 		
@@ -77,6 +77,9 @@ public class Player extends Sprite {
 			if (spriteCollide(s))
 				rect.y -= velocityY;
 		}
+		
+		rect.x = Math.max(0, Math.min(rect.x, game.gameAreaWidth - rect.width));
+		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
 	}
 	
 }

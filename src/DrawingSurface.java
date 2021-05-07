@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Set;
 
 import g4p_controls.GAlign;
 import g4p_controls.GButton;
@@ -12,6 +11,9 @@ public class DrawingSurface extends PApplet {
 
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
+	
+	public int gameAreaWidth;
+	public int gameAreaHeight;
 	
 	public ArrayList<Sprite> obstacles;
 	public Player player1;
@@ -28,6 +30,9 @@ public class DrawingSurface extends PApplet {
 	public DrawingSurface() {
 		keysHeld = new ArrayList<Integer>();
 		obstacles = new ArrayList<Sprite>();
+		
+		gameAreaWidth = 5000;
+		gameAreaHeight = 3000;
 	}
 		
 
@@ -53,25 +58,37 @@ public class DrawingSurface extends PApplet {
 		animalDrawn = 0;
 		
 		player1 = new Player(30, 30, loadImage("player.png"));
-		obstacles.add(new Sprite(100, 100, 50, 50, loadImage("obstacle.png")));
+		obstacles.add(new Sprite(150, 150, 300, 50, loadImage("obstacle.png")));
+	}
+	
+	public void update() {
+		player1.update(this);
 	}
 
 	public void draw() {
 		
+		update();
+		
+		/* DRAWING */
+		
+		background(150, 150, 150);
+		
 		pushMatrix();
 		
+		// Center the game field on the player
 		translate(WIDTH/2, HEIGHT/2);
 		translate(-(float)player1.rect.x, -(float)player1.rect.y);
 		
-		background(0, 255, 255);
-		player1.update(this);
+		fill(150, 100, 0);
+		rect(0, 0, gameAreaWidth, gameAreaHeight); // map background
+		
 		player1.draw(this);
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
 		popMatrix();
 		
-		/* ALL UI ELEMENTS GO BELOW HERE */
+		// ALL UI ELEMENTS DRAW BELOW HERE
 		
 		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + "number";
 		fill(0);
