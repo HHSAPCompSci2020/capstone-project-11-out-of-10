@@ -62,13 +62,20 @@ public class Player extends Sprite {
 		else if (game.isKeyHeld(DrawingSurface.DOWN))
 			walk(1.5 * Math.PI);
 		
-		super.update(game);
+		/* Collision works separately on X and Y, so if Player collides while moving diagonally,
+		 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
+		 */
 		
+		rect.x += velocityX;
 		for (Sprite s : game.obstacles) {
-			if (spriteCollide(s)) {
+			if (spriteCollide(s))
 				rect.x -= velocityX;
+		}
+		
+		rect.y += velocityY;
+		for (Sprite s : game.obstacles) {
+			if (spriteCollide(s))
 				rect.y -= velocityY;
-			}
 		}
 	}
 	
