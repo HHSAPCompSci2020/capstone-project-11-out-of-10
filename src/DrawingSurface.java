@@ -17,6 +17,14 @@ public class DrawingSurface extends PApplet {
 	public Player player1;
 	public ArrayList<Integer> keysHeld;
 	
+	int animalDrawn;
+
+
+	GButton b1,b2,b3,b4,b5;
+	GLabel lblOut;
+	//long timer;
+	
+	
 	public DrawingSurface() {
 		keysHeld = new ArrayList<Integer>();
 		obstacles = new ArrayList<Sprite>();
@@ -27,19 +35,19 @@ public class DrawingSurface extends PApplet {
 		size(600, 440);
 	}*/
 
-	int animalDrawn;
-
-
-	GButton b1,b2,b3,b4,b5;
-	GLabel lblOut;
-	long timer;
+	
 
 	public void setup() {
-		b1 = new GButton(this, 40, 200, 40, 20, "Button 1");
-		b2 = new GButton(this, 100, 200, 40, 20, "Button 2");
-		b3 = new GButton(this, 160, 200, 40, 20, "Button 3");
-		b4 = new GButton(this, 220, 200, 40, 20, "Button 4");
-		b5 = new GButton(this, 280, 200, 40, 20, "Button 5");
+		b1 = new GButton(this, 40,  500, 80, 30, "Button 1");
+		b1.fireAllEvents(true);
+		b2 = new GButton(this, 190, 500, 80, 30, "Button 2");
+		b2.fireAllEvents(true);
+		b3 = new GButton(this, 340, 500, 80, 30, "Button 3");
+		b3.fireAllEvents(true);
+		b4 = new GButton(this, 490, 500, 80, 30, "Button 4");
+		b4.fireAllEvents(true);
+		b5 = new GButton(this, 640, 500, 80, 30, "Button 5");
+		b5.fireAllEvents(true);
 
 		lblOut = new GLabel(this, 50, 30, 560, 20, "");
 		animalDrawn = 0;
@@ -57,7 +65,9 @@ public class DrawingSurface extends PApplet {
 		translate(-(float)player1.rect.x, -(float)player1.rect.y);
 		
 		background(0, 255, 255);
-		
+		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + "number";
+		fill(0);
+		text(text, -365, -250);
 		player1.update(this);
 		player1.draw(this);
 		for (Sprite s : obstacles)
@@ -99,12 +109,10 @@ public class DrawingSurface extends PApplet {
 	}
 
 	public void handleButtonEvents(GButton button, GEvent event) {
-		// Create the control window?
 		if (button == b1 && event == GEvent.CLICKED) {
 			//lblOut.setText("Hit button 1");
 			System.out.println("1");
 			animalDrawn = 1;
-			System.out.println(animalDrawn);
 			
 		} else if (button == b2 && event == GEvent.CLICKED) {
 			//lblOut.setText("Hit button 2");
