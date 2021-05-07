@@ -111,6 +111,22 @@ public class DrawingSurface extends PApplet {
 		return keysHeld.contains(code);
 	}
 	
+	public int getXAxisInput() {
+		if (isKeyHeld(RIGHT))
+			return 1;
+		if (isKeyHeld(LEFT))
+			return -1;
+		return 0;
+	}
+	
+	public int getYAxisInput() {
+		if (isKeyHeld(UP))
+			return 1;
+		if (isKeyHeld(DOWN))
+			return -1;
+		return 0;
+	}
+	
 	public void mousePressed() {
 		if(animalDrawn == 1) {
 			lblOut = new GLabel(this, mouseX, mouseY, 560, 20, "hi1");
