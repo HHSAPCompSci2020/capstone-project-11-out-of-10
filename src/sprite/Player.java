@@ -40,7 +40,7 @@ public class Player extends Sprite {
 	
 	/**
 	 * Changes the Player's velocity. 
-	 * Always travels at the same speed (Player.MOVE_SPEED), no matter the angle
+	 * @param speed The speed to walk at
 	 * @param angle The angle to walk at
 	 */
 	public void walk(double angle, double speed) {
@@ -50,16 +50,11 @@ public class Player extends Sprite {
 	
 	@Override
 	public void update(DrawingSurface game) {
-		velocityX = 0;
-		velocityY = 0;
-		
 		int x = game.getXAxisInput();
 		int y = game.getYAxisInput();
 		
-		if (x*x + y*y != 0) {
-			double angle = Math.atan2(y, x);
-			walk(angle, MOVE_SPEED);
-		}
+		double angle = Math.atan2(y, x);
+		walk(angle, (x == 0 && y == 0) ? 0 : MOVE_SPEED);
 		
 		/* Collision works separately on X and Y, so if a Player collides while moving diagonally,
 		 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
