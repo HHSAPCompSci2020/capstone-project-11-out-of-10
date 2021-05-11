@@ -15,9 +15,6 @@ import sprite.Player;
 import sprite.Sprite;
 
 public class DrawingSurface extends PApplet {
-
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
 	
 	public Screen currentScreen;
 	public MainScreen main;
@@ -28,10 +25,7 @@ public class DrawingSurface extends PApplet {
 	
 	public DrawingSurface() {
 		net = new NetworkingHandler(this);
-		
-		main = new MainScreen(this);
-		menu = new MenuScreen(this);
-		currentScreen = menu;
+		keysHeld = new ArrayList<Integer>();
 	}
 		
 
@@ -42,11 +36,16 @@ public class DrawingSurface extends PApplet {
 	
 
 	public void setup() {
-		
+		main = new MainScreen(this);
+		main.setup();
+		//menu = new MenuScreen(this);
+		//menu.setup();
+		currentScreen = main;
 	}
 
 	public void draw() {
-		
+		currentScreen.update();
+		currentScreen.draw();
 	}
 	
 	public void keyPressed() {
