@@ -12,15 +12,15 @@ import sprite.Sprite;
  * @author Timothy Li
  *
  */
-public class Organism extends Sprite {
+public abstract class Organism extends Sprite {
 	protected int reproductionCount;
 	protected int price;
 	
-	public Organism(double x, double y, double w, double h, int organismPrice, int count, PImage image) {
+	public Organism(double x, double y, double w, double h, int organismPrice, int count, PImage image, MainScreen game) {
 		super(x, y, w, h, image);
 		reproductionCount = count;
 		price = organismPrice;
-		//organisms.add(this);
+		game.add(this);
 	}
 	
 	public void move(double dx, double dy) {
@@ -31,9 +31,11 @@ public class Organism extends Sprite {
 		game.remove(this);
 	}
 	
-	public void reproduce(MainScreen game) {
-		game.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image));
-	}
+	public abstract void reproduce(MainScreen game);
+		//game.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image,game));
+	
+
+	public abstract int getCost();
 	
 	
 }

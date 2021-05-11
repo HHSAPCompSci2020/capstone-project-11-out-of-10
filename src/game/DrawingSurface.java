@@ -31,7 +31,7 @@ public class DrawingSurface extends PApplet {
 		
 		main = new MainScreen(this);
 		menu = new MenuScreen(this);
-		currentScreen = menu;
+		currentScreen = main;
 	}
 		
 
