@@ -16,6 +16,10 @@ public abstract class Screen {
 		
 	}
 	
+	public void update() {
+		
+	}
+	
 	public void draw() {
 		
 	}

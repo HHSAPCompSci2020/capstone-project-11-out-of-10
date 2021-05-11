@@ -17,7 +17,7 @@ public class EcoWars {
 		PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
 		JFrame window = (JFrame) canvas.getFrame();
 
-		window.setBounds(0, 0, drawing.WIDTH, drawing.HEIGHT);
+		window.setBounds(0, 0, 800, 600);
 		window.setMinimumSize(new Dimension(100,100));
 		window.setResizable(true);
 		window.setTitle("EcoWars");

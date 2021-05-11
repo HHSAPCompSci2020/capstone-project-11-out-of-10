@@ -28,10 +28,7 @@ public class DrawingSurface extends PApplet {
 	
 	public DrawingSurface() {
 		net = new NetworkingHandler(this);
-		
-		main = new MainScreen(this);
-		menu = new MenuScreen(this);
-		currentScreen = main;
+		keysHeld = new ArrayList<Integer>();
 	}
 		
 
