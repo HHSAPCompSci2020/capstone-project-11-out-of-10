@@ -2,6 +2,7 @@ package organisms;
 
 import java.util.ArrayList;
 
+import game.DrawingSurface;
 import processing.core.PImage;
 import sprite.Sprite;
 
@@ -13,7 +14,6 @@ import sprite.Sprite;
 public class Organism extends Sprite {
 	protected int reproductionCount;
 	protected int price;
-	private static ArrayList<Organism> organisms;
 	
 	public Organism(double x, double y, double w, double h, int organismPrice, int count, PImage image) {
 		super(x, y, w, h, image);
@@ -26,12 +26,12 @@ public class Organism extends Sprite {
 		translate(dx,dy);
 	}
 	
-	public void remove() {
-		organisms.remove(organisms.indexOf(this));
+	public void remove(DrawingSurface d) {
+		d.remove(this);
 	}
 	
-	public void reproduce() {
-		organisms.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image));
+	public void reproduce(DrawingSurface d) {
+		d.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image));
 	}
 	
 	

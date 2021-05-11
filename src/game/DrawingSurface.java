@@ -5,7 +5,7 @@ import g4p_controls.GAlign;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GLabel;
-
+import organisms.Organism;
 import processing.core.PApplet;
 import sprite.Player;
 import sprite.Sprite;
@@ -22,7 +22,8 @@ public class DrawingSurface extends PApplet {
 	public Player player1;
 	public ArrayList<Integer> keysHeld;
 	
-	int animalDrawn;
+	private int animalDrawn;
+	private static ArrayList<Organism> organisms;
 
 
 	GButton b1,b2,b3,b4,b5;
@@ -171,5 +172,12 @@ public class DrawingSurface extends PApplet {
 			animalDrawn = 5;
 		}
 		
+	}
+	
+	public void remove(Organism o) {
+		organisms.remove(organisms.indexOf(o));
+	}
+	public void add(Organism o) {
+		organisms.add(o);
 	}
 }
