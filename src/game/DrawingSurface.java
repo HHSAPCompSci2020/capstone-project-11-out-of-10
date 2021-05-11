@@ -5,7 +5,10 @@ import g4p_controls.GAlign;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GLabel;
+
 import organisms.Organism;
+import networking.NetworkingHandler;
+
 import processing.core.PApplet;
 import sprite.Player;
 import sprite.Sprite;
@@ -30,6 +33,8 @@ public class DrawingSurface extends PApplet {
 	GLabel lblOut;
 	//long timer;
 	
+	private NetworkingHandler net;
+	
 	
 	public DrawingSurface() {
 		keysHeld = new ArrayList<Integer>();
@@ -37,6 +42,8 @@ public class DrawingSurface extends PApplet {
 		
 		gameAreaWidth = 5000;
 		gameAreaHeight = 3000;
+		
+		net = new NetworkingHandler(this);
 	}
 		
 
@@ -102,6 +109,9 @@ public class DrawingSurface extends PApplet {
 	public void keyPressed() {
 		if (!keysHeld.contains(keyCode))
 			keysHeld.add(keyCode);
+		if (key == ' ') {
+			net.postPlayer(player1);
+		}
 	}
 	
 	public void keyReleased() {
@@ -174,8 +184,9 @@ public class DrawingSurface extends PApplet {
 		
 	}
 	
+
 	public void remove(Organism o) {
-		organisms.remove(organisms.indexOf(o));
+		organisms.remove(o);
 	}
 	public void add(Organism o) {
 		organisms.add(o);

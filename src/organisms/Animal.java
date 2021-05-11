@@ -17,4 +17,8 @@ public abstract class Animal extends Organism {
 	public abstract void eat();
 	
 	public abstract boolean lookForFood(); //proposal: combine into one, where eat returns bool on whether there is enough food
+	
+	public int getCurrentFood() {
+		return 0; // NOTE: not sure what to return here
+	}
 }

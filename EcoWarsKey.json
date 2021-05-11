@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ecowars-db164",
+  "private_key_id": "c531551c6835bd5f24f692d5ae38aad4c48839f1",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCiN4sATuLcKMwr\ncpNtCLaP0WXTCkGiAbDiIXOTwfeiGZHht+PO15PKfSsk5UAU5KD0z+6PmzoT0EIk\nZUaOKxnZHXOkZNkiXJnSFQr/iSdpW96YJDm7mYPo5SJ+2R8O7XinlEhpMc2Jto72\n4vSw7dutgU+/C594nRkuUum/qPLrcRNZ1AAnPwOaN00c6/ykeHCUhnuTyTe4+bHO\nXyAF36swjAP9E3cp7VtqZCsauWHqBojENAmNUZ3m0JhTDGHvDWgxYxXtAD/o8K0O\nTUFRgdzHHoM8MXjOjrGGU+yz1wccO6E1NQZCvrXJSVdU14N1+kaHHbMqy9OEokJL\nbNHndDdFAgMBAAECggEAGy5F3QEa26t9XHlYERDA8FO0pVpGWZRBdH6I7HT3nqJ8\nsm7a3dV69tam1EmShX2yp5qwvUDUCC5g6tLKcfdwXxQjhKP+SxbrkktC2sL7Rtjl\nMSZ+wvur4eoE7+7HGLv7N88tm+zDpSPhDCbGu9+7K7UrbNZQfAgMyFmNv7baL09w\ncKo1o/6PhdSs2XIh5+cgoZcXaqxRIp8Fwag9l88I7fCRuJ48kILruKHpQVeMtEOp\nlkWsjWdxt/kODuq6eSMCqar2yYIyIbm7lSFGwKnfAsCQUaEfRtvXLaL5ilk8ib4Z\nBf1CLAupVZrkiD4RTLXGlChKSlPCMhak6MKSV4yDgQKBgQDZX/gm2CpA/kB/LDg8\nNnOiWhWgjRP4CcXtzpsWlbfGS4A2vrE/BG+jvdLOpla6SOp+bUCYnsHR2Wii/7G5\nEKWKP53BQKkLeLIA6Q63ojC8mF5CjZhXk16Wu0oVi4uHAJN/am1z6hCW0vR3UQRm\nk+/Ermq5YmToWsoJGMKzGU/zxQKBgQC/CoePtOq6OCKvm5+tYfWp0KHMyC2z8fEu\np75pqL5txkGV7jUPDutMUabmDm7PqUKmOE/xeZjqS+CKkpmZm6sZVafsUkj1KJpa\nakmVuKaRUiqtoNnb6vkKLX0+o8TNu7MSLTK/OL15mcgWf7RrxY6qJ8E3C5Tiacbm\n/pu1+lntgQKBgQCy2LwSMa5qNQaZ26cVG3P+cwHyS8DPRjM8Ws3NQjenBf2ijTjF\n8X9tCERG1CLtOAr/JCKOr6gmYSsvWRM/gcvBuF+yXeH310EVcKs0OVTCBtcfCOL7\nwvuDJutoWJze4YF5xvXw9fbaMQ0Eknr9buBKQXr7tlHxvqkV3PJsavoWRQKBgQCD\nfMjPBTNllktxWIhvenPuPFWQr9qc9pIMjZHGAUmIHqN3gSttwNP8hFp+D0L/lLz1\n0N5dEldIM49JcRtdGUKLPmREiGIEsryCLJOXBC9I6CfNt18bOT/NXH/OhENpYp4e\njZNW/8ORlWGc8qqIXsIRpSkcLNF9gFZRGL6tYrFQgQKBgDlHCaRLoaGnH5gj4Aps\nz/AGmx/cWGKVUB2sQbK9O2aGWh4tB14LkuGP/eC2UWr98j5A+FyZCfInXCKTHfZV\n9Nj6BIIkSGPDsqFZLbxs8DriICKOCLoKslACsls7g10cw/Vihe/XFTp0WZYDDg1h\nG3X+YOEiwIVeQCarQG5M9Ego\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-e7ku6@ecowars-db164.iam.gserviceaccount.com",
+  "client_id": "114847327604015011002",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-e7ku6%40ecowars-db164.iam.gserviceaccount.com"
+}

@@ -19,7 +19,7 @@ public class Organism extends Sprite {
 		super(x, y, w, h, image);
 		reproductionCount = count;
 		price = organismPrice;
-		organisms.add(this);
+		//organisms.add(this);
 	}
 	
 	public void move(double dx, double dy) {
