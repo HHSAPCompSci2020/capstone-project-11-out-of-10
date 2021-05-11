@@ -13,5 +13,6 @@ public class Animal extends Organism {
 		super(x, y, w, h, image);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
 }
