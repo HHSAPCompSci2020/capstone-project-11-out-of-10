@@ -3,6 +3,7 @@ package organisms;
 import java.util.ArrayList;
 
 import game.DrawingSurface;
+import game.MainScreen;
 import processing.core.PImage;
 import sprite.Sprite;
 
@@ -26,12 +27,12 @@ public class Organism extends Sprite {
 		translate(dx,dy);
 	}
 	
-	public void remove(DrawingSurface d) {
-		d.remove(this);
+	public void remove(MainScreen game) {
+		game.remove(this);
 	}
 	
-	public void reproduce(DrawingSurface d) {
-		d.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image));
+	public void reproduce(MainScreen game) {
+		game.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image));
 	}
 	
 	

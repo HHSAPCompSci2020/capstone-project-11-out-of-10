@@ -1,6 +1,7 @@
 package sprite;
 
 import game.DrawingSurface;
+import game.MainScreen;
 import processing.core.PImage;
 
 /**
@@ -50,6 +51,14 @@ public class Player extends Sprite {
 	
 	@Override
 	public void update(DrawingSurface game) {
+		
+		if (!(game.currentScreen instanceof MainScreen)) {
+			super.update(game);
+			return;
+		}
+		
+		MainScreen screen = (MainScreen) game.currentScreen;
+		
 		int x = game.getXAxisInput();
 		int y = game.getYAxisInput();
 		
@@ -61,19 +70,23 @@ public class Player extends Sprite {
 		 */
 		
 		rect.x += velocityX;
-		for (Sprite s : game.obstacles) {
+		for (Sprite s : screen.obstacles) {
 			if (spriteCollide(s))
 				rect.x -= velocityX;
 		}
 		
 		rect.y += velocityY;
-		for (Sprite s : game.obstacles) {
+		for (Sprite s : screen.obstacles) {
 			if (spriteCollide(s))
 				rect.y -= velocityY;
 		}
 		
-		rect.x = Math.max(0, Math.min(rect.x, game.gameAreaWidth - rect.width));
-		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
+		rect.x = Math.max(0, Math.min(rect.x, screen.gameAreaWidth - rect.width));
+		rect.y = Math.max(0, Math.min(rect.y, screen.gameAreaHeight - rect.height));
+	}
+	
+	public double getBalance() {
+		return balance;
 	}
 	
 }

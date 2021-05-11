@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import game.DrawingSurface;
+import game.MainScreen;
 import organisms.Animal;
 import organisms.Organism;
 import sprite.Player;
@@ -23,6 +24,7 @@ public class NetworkingHandler implements ChildEventListener {
 	private ConcurrentLinkedQueue<Runnable> tasks;
 	private DrawingSurface drawing;
 	private DatabaseReference database;
+	private String playerID;
 	
 	public NetworkingHandler(DrawingSurface drawing) {   // This threading strategy will work with Processing programs. Just use this code inside your PApplet.
 		tasks = new ConcurrentLinkedQueue<Runnable>();
@@ -50,8 +52,14 @@ public class NetworkingHandler implements ChildEventListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
+	public void setup(String playerID) {
+		this.playerID = playerID;
+		Player p = drawing.main.player1;
+		database.child(playerID).setValueAsync(new PlayerPost(p.getBalance(), p.getX(), p.getY(), null));
+	}
 	
 	public void post() {
 		while (!tasks.isEmpty()) {
@@ -68,7 +76,7 @@ public class NetworkingHandler implements ChildEventListener {
 	}
 	
 	public void postPlayer(Player p) {
-		OrganismPost post = new OrganismPost(-1, p.getX(), p.getY(), 0);
+		PlayerPost post = new PlayerPost(p.getBalance(), p.getX(), p.getY(), null);
 		database.push().setValueAsync(post);
 	}
 	
@@ -84,8 +92,9 @@ public class NetworkingHandler implements ChildEventListener {
 		tasks.add(new Runnable() {
 			@Override
 			public void run() {
+				
 				OrganismPost post = snap.getValue(OrganismPost.class);
-				drawing.player1.setLocation(post.getX(), post.getY());
+				drawing.main.player1.setLocation(post.getX(), post.getY());
 				System.out.println(post);
 			}
 		});
