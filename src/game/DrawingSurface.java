@@ -38,14 +38,22 @@ public class DrawingSurface extends PApplet {
 	public void setup() {
 		main = new MainScreen(this);
 		main.setup();
-		//menu = new MenuScreen(this);
-		//menu.setup();
-		currentScreen = main;
+		main.setActive(false);
+		
+		menu = new MenuScreen(this);
+		menu.setup();
+		currentScreen = menu;
 	}
 
 	public void draw() {
 		currentScreen.update();
 		currentScreen.draw();
+	}
+	
+	public void switchScreen(Screen newScreen) {
+		currentScreen.setActive(false);
+		newScreen.setActive(true);
+		currentScreen = newScreen;
 	}
 	
 	public void keyPressed() {

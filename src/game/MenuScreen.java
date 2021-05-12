@@ -37,4 +37,9 @@ public class MenuScreen extends Screen {
 		}
 	}
 	
+	public void setActive(boolean isActive) {
+		startButton.setEnabled(isActive);
+		startButton.setVisible(isActive);
+		super.setActive(isActive);
+	}
 }

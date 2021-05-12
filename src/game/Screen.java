@@ -7,6 +7,8 @@ public abstract class Screen {
 
 	public final int DRAWING_WIDTH, DRAWING_HEIGHT;
 	
+	public boolean isActive;
+	
 	public Screen(int width, int height) {
 		this.DRAWING_WIDTH = width;
 		this.DRAWING_HEIGHT = height;
@@ -42,6 +44,10 @@ public abstract class Screen {
 	
 	public void handleButtonEvents(GButton button, GEvent event) {
 		
+	}
+	
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 		
 }

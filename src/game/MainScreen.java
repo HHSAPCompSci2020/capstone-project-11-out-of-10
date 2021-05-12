@@ -25,7 +25,6 @@ public class MainScreen extends Screen {
 	public int gameAreaHeight;
 	
 	ArrayList<GButton> buttons;
-	GLabel lblOut;
 	private int animalDrawn;
 	
 	public MainScreen(DrawingSurface surface) {
@@ -49,7 +48,6 @@ public class MainScreen extends Screen {
 		for (GButton b : buttons)
 			b.fireAllEvents(true);
 
-		lblOut = new GLabel(surface, 50, 30, 560, 20, "");
 		animalDrawn = 0;
 		
 		player1 = new Player(30, 30, surface.loadImage("player.png"));
@@ -116,6 +114,13 @@ public class MainScreen extends Screen {
 	
 	public void add(Organism o) {
 		organisms.add(o);
+	}
+	
+	public void setActive(boolean isActive) {
+		for (GButton b : buttons) {
+			b.setEnabled(isActive);
+			b.setVisible(isActive);
+		}
 	}
 
 }
