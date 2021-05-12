@@ -15,6 +15,9 @@ import sprite.Player;
 import sprite.Sprite;
 
 public class DrawingSurface extends PApplet {
+
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
 	
 	public Screen currentScreen;
 	public MainScreen main;
@@ -46,8 +49,7 @@ public class DrawingSurface extends PApplet {
 	}
 
 	public void draw() {
-		currentScreen.update();
-		currentScreen.draw();
+		
 	}
 	
 	public void switchScreen(Screen newScreen) {

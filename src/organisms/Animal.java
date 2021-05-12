@@ -1,5 +1,6 @@
 package organisms;
 
+import game.MainScreen;
 import processing.core.PImage;
 
 /**
@@ -10,15 +11,12 @@ import processing.core.PImage;
 public abstract class Animal extends Organism {
 	protected int foodCount; // how often the animal has to eat
 
-	public Animal(double x, double y, double w, double h, int price, int reproductionCount, int foodCount, PImage image) {
-		super(x, y, w, h, price, reproductionCount, image);
+	public Animal(double x, double y, double w, double h, int price, int reproductionCount, int foodCount, PImage image, MainScreen game) {
+		super(x, y, w, h, price, reproductionCount, image, game);
 	}
 	
 	public abstract void eat();
 	
 	public abstract boolean lookForFood(); //proposal: combine into one, where eat returns bool on whether there is enough food
 	
-	public int getCurrentFood() {
-		return 0; // NOTE: not sure what to return here
-	}
 }
