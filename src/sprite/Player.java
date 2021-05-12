@@ -1,7 +1,7 @@
 package sprite;
 
 import game.DrawingSurface;
-import game.MainScreen;
+import networking.PlayerPost;
 import processing.core.PImage;
 
 /**
@@ -28,6 +28,7 @@ public class Player extends Sprite {
 	public static final int MOVE_SPEED = 5;
 	
 	private double balance;
+	private boolean hasChanged;
 	
 	/**
 	 * Creates a new Player with starting position and graphics.
@@ -47,17 +48,12 @@ public class Player extends Sprite {
 	public void walk(double angle, double speed) {
 		velocityX = speed*Math.cos(angle);
 		velocityY = -speed*Math.sin(angle);
+		
+		hasChanged = (speed != 0);
 	}
 	
 	@Override
 	public void update(DrawingSurface game) {
-		
-		if (!(game.currentScreen instanceof MainScreen)) {
-			super.update(game);
-			return;
-		}
-		
-		MainScreen screen = (MainScreen) game.currentScreen;
 		
 		int x = game.getXAxisInput();
 		int y = game.getYAxisInput();
@@ -70,23 +66,31 @@ public class Player extends Sprite {
 		 */
 		
 		rect.x += velocityX;
-		for (Sprite s : screen.obstacles) {
+		for (Sprite s : game.obstacles) {
 			if (spriteCollide(s))
 				rect.x -= velocityX;
 		}
 		
 		rect.y += velocityY;
-		for (Sprite s : screen.obstacles) {
+		for (Sprite s : game.obstacles) {
 			if (spriteCollide(s))
 				rect.y -= velocityY;
 		}
 		
-		rect.x = Math.max(0, Math.min(rect.x, screen.gameAreaWidth - rect.width));
-		rect.y = Math.max(0, Math.min(rect.y, screen.gameAreaHeight - rect.height));
+		rect.x = Math.max(0, Math.min(rect.x, game.gameAreaWidth - rect.width));
+		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
 	}
 	
 	public double getBalance() {
 		return balance;
+	}
+	
+	public boolean hasChanged() {
+		return hasChanged;
+	}
+	
+	public PlayerPost getDataObject() {
+		return new PlayerPost(balance, rect.x, rect.y);
 	}
 	
 }

@@ -6,17 +6,15 @@ public class PlayerPost {
 	
 	private double balance;
 	private double x, y;
-	private ArrayList<OrganismPost> organisms;
 	
 	public PlayerPost() {
 		
 	}
 
-	public PlayerPost(double balance, double x, double y, ArrayList<OrganismPost> organisms) {
+	public PlayerPost(double balance, double x, double y) {
 		this.balance = balance;
 		this.x = x;
 		this.y = y;
-		this.organisms = organisms;
 	}
 	
 	public double getBalance() {
@@ -29,10 +27,6 @@ public class PlayerPost {
 	
 	public double getY() {
 		return y;
-	}
-	
-	public ArrayList<OrganismPost> getOrganisms() {
-		return organisms;
 	}
 	
 	public String toString() {

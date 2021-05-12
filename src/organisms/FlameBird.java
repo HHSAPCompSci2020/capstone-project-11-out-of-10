@@ -1,13 +1,12 @@
 package organisms;
 
 import game.DrawingSurface;
-import game.MainScreen;
 import processing.core.PImage;
 
 public class FlameBird extends Animal{
 
 	public FlameBird(double x, double y, double w, double h, int price, int reproductionCount, int foodCount,
-			PImage image, MainScreen game) {
+			PImage image, DrawingSurface game) {
 		super(x, y, w, h, price, reproductionCount, foodCount, image, game);
 		// TODO Auto-generated constructor stub
 	}
@@ -25,7 +24,7 @@ public class FlameBird extends Animal{
 	}
 
 	@Override
-	public void reproduce(MainScreen game) {
+	public void reproduce(DrawingSurface game) {
 		//game.add(new FlameBird(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image,d));
 		
 	}

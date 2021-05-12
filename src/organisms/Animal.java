@@ -1,6 +1,6 @@
 package organisms;
 
-import game.MainScreen;
+import game.DrawingSurface;
 import processing.core.PImage;
 
 /**
@@ -11,7 +11,7 @@ import processing.core.PImage;
 public abstract class Animal extends Organism {
 	protected int foodCount; // how often the animal has to eat
 
-	public Animal(double x, double y, double w, double h, int price, int reproductionCount, int foodCount, PImage image, MainScreen game) {
+	public Animal(double x, double y, double w, double h, int price, int reproductionCount, int foodCount, PImage image, DrawingSurface game) {
 		super(x, y, w, h, price, reproductionCount, image, game);
 	}
 	
