@@ -19,8 +19,7 @@ public class YellowberryTree extends Organism{
 
 	@Override
 	public int getCost() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 100;
 	}
 
 }
