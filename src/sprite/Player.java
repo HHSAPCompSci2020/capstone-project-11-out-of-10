@@ -38,6 +38,7 @@ public class Player extends Sprite {
 	 */
 	public Player(int x, int y, PImage image) { 
 		super(x, y, WIDTH, HEIGHT, image);
+		this.balance = 100;
 	}
 	
 	/**
@@ -48,33 +49,42 @@ public class Player extends Sprite {
 	public void walk(double angle, double speed) {
 		velocityX = speed*Math.cos(angle);
 		velocityY = -speed*Math.sin(angle);
-		
-		hasChanged = (speed != 0);
 	}
 	
 	@Override
+	// the update method should set hasChanged every time it is called
 	public void update(DrawingSurface game) {
 		
 		int x = game.getXAxisInput();
 		int y = game.getYAxisInput();
 		
 		double angle = Math.atan2(y, x);
-		walk(angle, (x == 0 && y == 0) ? 0 : MOVE_SPEED);
-		
-		/* Collision works separately on X and Y, so if a Player collides while moving diagonally,
-		 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
-		 */
-		
-		rect.x += velocityX;
-		for (Sprite s : game.obstacles) {
-			if (spriteCollide(s))
-				rect.x -= velocityX;
-		}
-		
-		rect.y += velocityY;
-		for (Sprite s : game.obstacles) {
-			if (spriteCollide(s))
-				rect.y -= velocityY;
+		if (x == 0 && y == 0) {
+			velocityX = 0;
+			velocityY = 0;
+			
+			hasChanged = false;
+			
+		} else {
+			walk(angle, MOVE_SPEED);
+			
+			/* Collision works separately on X and Y, so if a Player collides while moving diagonally,
+			 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
+			 */
+			
+			rect.x += velocityX;
+			for (Sprite s : game.obstacles) {
+				if (spriteCollide(s))
+					rect.x -= velocityX;
+			}
+			
+			rect.y += velocityY;
+			for (Sprite s : game.obstacles) {
+				if (spriteCollide(s))
+					rect.y -= velocityY;
+			}
+			
+			hasChanged = true;
 		}
 		
 		rect.x = Math.max(0, Math.min(rect.x, game.gameAreaWidth - rect.width));
@@ -91,6 +101,11 @@ public class Player extends Sprite {
 	
 	public PlayerPost getDataObject() {
 		return new PlayerPost(balance, rect.x, rect.y);
+	}
+	
+	public void matchPost(PlayerPost post) {
+		setLocation(post.getX(), post.getY());
+		balance = post.getBalance();
 	}
 	
 }
