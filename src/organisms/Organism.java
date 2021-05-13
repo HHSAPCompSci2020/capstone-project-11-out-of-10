@@ -13,12 +13,10 @@ import sprite.Sprite;
  */
 public abstract class Organism extends Sprite {
 	protected int reproductionCount;
-	protected int price;
 	
-	public Organism(double x, double y, double w, double h, int organismPrice, int count, PImage image, DrawingSurface game) {
+	public Organism(double x, double y, double w, double h, int count, PImage image, DrawingSurface game) {
 		super(x, y, w, h, image);
 		reproductionCount = count;
-		price = organismPrice;
 		game.add(this);
 	}
 	
@@ -36,5 +34,6 @@ public abstract class Organism extends Sprite {
 
 	public abstract int getCost();
 	
+	public abstract void act(DrawingSurface game);
 	
 }

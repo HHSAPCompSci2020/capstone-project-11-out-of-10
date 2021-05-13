@@ -17,7 +17,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GLabel;
 
 import organisms.Organism;
-
+import organisms.YellowberryTree;
 import processing.core.PApplet;
 import sprite.Player;
 import sprite.Sprite;
@@ -34,7 +34,8 @@ public class DrawingSurface extends PApplet {
 	public int gameAreaWidth;
 	public int gameAreaHeight;
 	public ArrayList<Sprite> obstacles;
-	private static ArrayList<Organism> organisms;
+	private ArrayList<Organism> organisms;
+	private int totalBerries;
 	public ArrayList<Player> players;
 	public Player thisPlayer;
 
@@ -173,5 +174,17 @@ public class DrawingSurface extends PApplet {
 	
 	public void add(Organism o) {
 		organisms.add(o);
+	}
+	
+	public ArrayList<Organism> getList() {
+		return organisms;
+	}
+	
+	public int getTotalBerries() {
+		return totalBerries;
+	}
+	
+	public void setTotalBerries(int newTotal) {
+		totalBerries = newTotal;
 	}
 }
