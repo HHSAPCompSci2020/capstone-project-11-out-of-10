@@ -31,6 +31,9 @@ public class YellowberryTree extends Organism {
 		if(game.millis()%(berryCount*1000)==0) {
 			game.setTotalBerries(game.getTotalBerries()+1);
 		}
+		if(game.millis()%(10000)==0) {
+			game.changeDNA(3);
+		}
 	}
 
 }

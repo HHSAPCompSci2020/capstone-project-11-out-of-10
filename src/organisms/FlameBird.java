@@ -46,6 +46,9 @@ public class FlameBird extends Animal{
 		if(game.millis()%(reproductionCount*1000)==0) {
 			reproduce(game);
 		}
+		if(game.millis()%(10000)==0) {
+			game.changeDNA(2);
+		}
 	}
 
 	@Override
@@ -53,4 +56,5 @@ public class FlameBird extends Animal{
 		FlameBird x = new FlameBird(getX()+10,getY(),getWidth(),getHeight(),image,game);
 	}
 
+	
 }

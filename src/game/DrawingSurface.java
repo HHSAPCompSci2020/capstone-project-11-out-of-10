@@ -41,6 +41,7 @@ public class DrawingSurface extends PApplet {
 	public ArrayList<Sprite> obstacles;
 	private ArrayList<Organism> organisms;
 	private int totalBerries;
+	private int totalDNA;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
 	
@@ -127,7 +128,7 @@ public class DrawingSurface extends PApplet {
 		
 		// ALL UI ELEMENTS DRAW BELOW HERE
 		
-		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + "number";
+		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + totalDNA;
 		fill(0);
 		text(text, 10, 20);
 	}
@@ -201,6 +202,10 @@ public class DrawingSurface extends PApplet {
 	
 	public void setTotalBerries(int newTotal) {
 		totalBerries = newTotal;
+	}
+	
+	public void changeDNA(int changeInDNA) {
+		totalDNA += changeInDNA;
 	}
 	
 	

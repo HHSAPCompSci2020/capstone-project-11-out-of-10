@@ -45,6 +45,9 @@ public class FluffyRam extends Animal {
 		if(game.millis()%(reproductionCount*1000)==0) {
 			reproduce(game);
 		}
+		if(game.millis()%(10000)==0) {
+			game.changeDNA(3);
+		}
 	}
 
 
