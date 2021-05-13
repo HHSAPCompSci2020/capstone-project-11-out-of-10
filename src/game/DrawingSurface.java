@@ -3,11 +3,15 @@ import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,10 +19,11 @@ import g4p_controls.GAlign;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GLabel;
-
+import networking.PlayerPost;
 import organisms.Organism;
 import organisms.YellowberryTree;
 import processing.core.PApplet;
+import processing.core.PImage;
 import sprite.Player;
 import sprite.Sprite;
 
@@ -36,8 +41,11 @@ public class DrawingSurface extends PApplet {
 	public ArrayList<Sprite> obstacles;
 	private ArrayList<Organism> organisms;
 	private int totalBerries;
-	public ArrayList<Player> players;
+	public HashMap<String, Player> players;
 	public Player thisPlayer;
+	
+	public static PImage playerImage;
+	public static PImage obstacleImage;
 
 	public DatabaseReference room;
 	public DatabaseReference thisPlayerRef;
@@ -50,14 +58,20 @@ public class DrawingSurface extends PApplet {
 		
 		obstacles = new ArrayList<Sprite>();
 		buttons = new ArrayList<GButton>();
-		players = new ArrayList<Player>();
+		players = new HashMap<String, Player>();
 		
 		this.room = room;
 		thisPlayerRef = room.child("players").push();
+		
+		room.child("players").addChildEventListener(new PlayerListener());
+		room.child("organisms").addChildEventListener(new OrganismListener());
 	}
 	
 	@Override
 	public void setup() {
+		playerImage = loadImage("player.png");
+		obstacleImage = loadImage("obstacle.png");
+		
 		buttons.add(new GButton(this, 40,  500, 80, 30, "Button 1"));
 		buttons.add(new GButton(this, 190, 500, 80, 30, "Button 2"));
 		buttons.add(new GButton(this, 340, 500, 80, 30, "Button 3"));
@@ -68,10 +82,12 @@ public class DrawingSurface extends PApplet {
 
 		animalDrawn = 0;
 		
-		thisPlayer = new Player(30, 30, loadImage("player.png"));
-		obstacles.add(new Sprite(150, 150, 300, 50, loadImage("obstacle.png")));
+		thisPlayer = new Player(30, 30, playerImage);
+		obstacles.add(new Sprite(150, 150, 300, 50, obstacleImage));
 		thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
+		
+		// on program exit
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				if (players.size() == 0)
@@ -175,7 +191,6 @@ public class DrawingSurface extends PApplet {
 	public void add(Organism o) {
 		organisms.add(o);
 	}
-	
 	public ArrayList<Organism> getList() {
 		return organisms;
 	}
@@ -186,5 +201,114 @@ public class DrawingSurface extends PApplet {
 	
 	public void setTotalBerries(int newTotal) {
 		totalBerries = newTotal;
+	}
+	
+	
+	
+	class PlayerListener implements ChildEventListener {
+		
+		private ConcurrentLinkedQueue<Runnable> tasks;
+		
+		public PlayerListener() {
+			tasks = new ConcurrentLinkedQueue<Runnable>();
+			
+			DrawingSurface.this.registerMethod("post", this);
+		}
+		
+		public void post() {
+			while (!tasks.isEmpty()) {
+				Runnable r = tasks.remove();
+				r.run();
+			}
+		}
+
+		@Override
+		public void onCancelled(DatabaseError arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildAdded(DataSnapshot snap, String arg1) {
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					if (snap.getRef().equals(thisPlayerRef))
+						return;
+					
+					Player p = new Player(0, 0, playerImage);
+					p.matchPost(snap.getValue(PlayerPost.class));
+					players.put(snap.getRef().getKey(), p);
+				}
+			});
+		}
+
+		@Override
+		public void onChildChanged(DataSnapshot snap, String arg1) {
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					if (snap.getRef().equals(thisPlayerRef))
+						return;
+					
+					Player p = players.get(snap.getRef().getKey());
+					if (p != null)
+						p.matchPost(snap.getValue(PlayerPost.class));
+				}
+			});
+		}
+
+		@Override
+		public void onChildMoved(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildRemoved(DataSnapshot snap) {
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					players.remove(snap.getRef().getKey());
+				}
+			});
+		}
+		
+	}
+	
+	class OrganismListener implements ChildEventListener {
+		
+		private ConcurrentLinkedQueue<Runnable> tasks;
+
+		@Override
+		public void onCancelled(DatabaseError arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildAdded(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildChanged(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildMoved(DataSnapshot arg0, String arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildRemoved(DataSnapshot arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }
