@@ -1,6 +1,7 @@
 package organisms;
 
 import game.DrawingSurface;
+import processing.core.PApplet;
 import processing.core.PImage;
 
 /**
@@ -17,6 +18,5 @@ public abstract class Animal extends Organism {
 	}
 	
 	public abstract boolean eat(DrawingSurface game);
-	
 	
 }

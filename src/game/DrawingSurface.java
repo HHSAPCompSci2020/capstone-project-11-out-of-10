@@ -128,6 +128,10 @@ public class DrawingSurface extends PApplet {
 		
 		// ALL UI ELEMENTS DRAW BELOW HERE
 		
+		for(Organism o : organisms) {
+			o.draw(this);
+		}
+		
 		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + totalDNA;
 		fill(0);
 		text(text, 10, 20);
