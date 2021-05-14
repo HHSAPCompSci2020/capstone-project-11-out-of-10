@@ -211,7 +211,7 @@ public class DrawingSurface extends PApplet {
 		if (animalDrawn >= 0 && animalDrawn <= 4) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
 			PImage imageToUse = organismImages.get(animalDrawn);
-			organisms.add(Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y));
+			organisms.add(Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this));
 			animalDrawn = -1;
 		}
 	}
