@@ -105,6 +105,37 @@ public class MenuScreen extends JPanel  {
 	 * @param selection The name of the room to join
 	 */
 	private void joinRoom(String selection) {
+
+		openRooms.orderByChild("name").equalTo(selection).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError error) {
+				System.out.println(error);
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot snap) {
+				
+				if (!snap.hasChildren())
+					return;
+				
+				DataSnapshot room = snap.getChildren().iterator().next();
+				RoomPost post = room.getValue(RoomPost.class);
+				
+				if (post.getPlayerCount() >= post.getPlayerMax()) {
+					JOptionPane.showMessageDialog(MenuScreen.this, "Too many players in the room!");
+					return;
+				}
+				
+				if (post.getPlayerCount() + 1 == post.getPlayerMax()) {
+					room.getRef().removeValueAsync();
+				} else {
+					room.child("playerCount").getRef().setValueAsync(post.getPlayerCount() + 1);
+				}
+				
+			}
+			
+		});
 		
 		gameRooms.orderByChild("name").equalTo(selection).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -115,25 +146,20 @@ public class MenuScreen extends JPanel  {
 			@Override
 			public void onDataChange(DataSnapshot snap) {
 				
-				DataSnapshot room = snap.getChildren().iterator().next();
-				RoomPost post = room.getValue(RoomPost.class);
-				
 				if (!snap.hasChildren())
 					return;
+				
+				DataSnapshot room = snap.getChildren().iterator().next();
+				RoomPost post = room.getValue(RoomPost.class);
 				
 				if (post.getPlayerCount() >= post.getPlayerMax()) {
 					JOptionPane.showMessageDialog(MenuScreen.this, "Too many players in the room!");
 					return;
 				}
 				
-				// tell the open room the player count has increased, or remove if reached maximum
-				DatabaseReference openRoom = openRooms.orderByChild("name").equalTo(selection).limitToFirst(1).getRef();
-				if (post.getPlayerCount() + 1 == post.getPlayerMax()) {
-					openRoom.removeValueAsync();
-				} else {
-					openRoom.child("playerCount").setValueAsync(post.getPlayerCount() + 1);
-				}
+				room.child("playerCount").getRef().setValueAsync(post.getPlayerCount() + 1);
 				
+				// Creating the Processing window
 				
 				MenuScreen.this.window.setVisible(false);
 				
