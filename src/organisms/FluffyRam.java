@@ -8,6 +8,12 @@ import processing.core.PImage;
 public class FluffyRam extends Animal {
 	private int reproductionIndex;
 
+	/**
+	 * Constructs a FluffyRam in the game
+	 * @param x x-coordinate of the FluffyRam
+	 * @param y y-coordinate of the FluffyRam
+	 * @param image image of the animal
+	 */
 	public FluffyRam(double x, double y, PImage image) {
 		super(x, y, 10, 20, 60/*reproduction*/, 10/*food*/, image);
 		reproductionIndex=0;

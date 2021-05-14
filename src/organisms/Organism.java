@@ -15,13 +15,13 @@ public abstract class Organism extends Sprite {
 	protected int reproductionCount;
 	
 	/**
-	 * Creates a new Organism
-	 * @param x X position
-	 * @param y Y position
-	 * @param w width of image
-	 * @param h height of image
-	 * @param count How often it reproduces
-	 * @param image Image to use
+	 * Constructs the organism in the game
+	 * @param x x-coordinate of the organism
+	 * @param y y-coordinate of the organism
+	 * @param w width of the organism
+	 * @param h height of the organism
+	 * @param count how often the animal reproduces
+	 * @param image image of the animal
 	 */
 	public Organism(double x, double y, double w, double h, int count, PImage image) {
 		super(x, y, w, h, image);
@@ -29,44 +29,44 @@ public abstract class Organism extends Sprite {
 	}
 	
 	/**
-	 * move by the distance given
-	 * @param dx distance along x axis
-	 * @param dy distance along y axis
+	 * moves the organism
+	 * @param dx how much in the x direction it moves by
+	 * @param dy how much in the y direction it moves by
 	 */
 	public void move(double dx, double dy) {
 		translate(dx,dy);
 	}
 	
 	/**
-	 * Deletes this from the game
-	 * @param game DrawingSurface of this Organism
+	 * removes organism from game
+	 * @param game DrawingSurface the organism is in
 	 */
 	public void remove(DrawingSurface game) {
 		game.remove(this);
 	}
 	
 	/**
-	 * Reproduces this organism
-	 * @param game
+	 * Allows the animal to reproduce
+	 * @param game DrawingSurface the organism is in
 	 */
 	public abstract void reproduce(DrawingSurface game);
-		//game.add(new Organism(getX()+10,getY(),getWidth(),getHeight(),price,reproductionCount,image,game));
-	
 
 	/**
-	 * @return price in DNA of this Organism
+	 * gets the cost of the organism
+	 * @return the cost of the organism
 	 */
 	public abstract int getCost();
 	
 	/**
-	 * Called every 10 seconds by the game
-	 * @param game DrawingSurface that called this
+	 * Something that is called every 10 seconds, what the organism does
+	 * @param game DrawingSurface that the organism is in
 	 */
 	public abstract void act(DrawingSurface game);
 	
 	/**
-	 * @param o Organism to covert
-	 * @return integer code corresponding to type
+	 * gets the index (number) of the organism
+	 * @param o organism to be indexed
+	 * @return the index corresponding to the organism to be added
 	 */
 	public static int getCodeFromOrganism(Organism o) {
 		if (o instanceof YellowberryTree)
@@ -84,12 +84,12 @@ public abstract class Organism extends Sprite {
 	}
 	
 	/**
-	 * Creates a new organism given an organism code
-	 * @param c Code
-	 * @param x new x position
-	 * @param y new y position
-	 * @param d DrawingSurface that called this
-	 * @return the Organism that was created
+	 * Creates the organism using the index
+	 * @param c the index
+	 * @param x x-coordinate of the Organism
+	 * @param y y-coordinate of the Organism
+	 * @param d DrawingSurface the Organism will be in
+	 * @returnx
 	 */
 	public static Organism createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
 		if (c == 0) {
