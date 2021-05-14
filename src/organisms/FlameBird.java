@@ -7,10 +7,11 @@ import processing.core.PImage;
 
 public class FlameBird extends Animal{
 
-	private int currencyIndex;
+	private int reproductionIndex;
 	
 	public FlameBird(double x, double y, PImage image) {
-		super(x, y, 10, 20, 45/*reproduction*/, 10/*food*/, image);
+		super(x, y, 10, 20, 50/*reproduction*/, 10/*food*/, image);
+		reproductionIndex = 0;
 	}
 
 	@Override
@@ -38,17 +39,16 @@ public class FlameBird extends Animal{
 
 	@Override
 	public void act(DrawingSurface game) {
-		if(game.millis()%(foodCount*1000)==0) {
-			if(!eat(game)) {
-				System.out.println("NOFOODFORFLAMEBIRD");
-			}
+		
+		if(!eat(game)) {
+			System.out.println("NOFOODFORFLAMEBIRD");
 		}
-		if(game.millis()%(reproductionCount*1000)==0) {
+		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
+			reproductionIndex = 0;
 		}
-		if(game.millis()%(10000)==0) {
-			game.changeDNA(2);
-		}
+		game.changeDNA(2);
+		reproductionIndex++;
 	}
 
 	@Override

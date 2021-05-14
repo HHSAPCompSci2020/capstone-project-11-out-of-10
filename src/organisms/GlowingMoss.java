@@ -5,9 +5,10 @@ import processing.core.PImage;
 
 public class GlowingMoss extends Organism{
 
+	private int reproductionIndex;
 	public GlowingMoss(double x, double y, PImage image) {
 		super(x, y, 10, 20, 20/*reproduction*/, image);
-		// TODO Auto-generated constructor stub
+		reproductionIndex = 0;
 	}
 
 	@Override
@@ -23,12 +24,12 @@ public class GlowingMoss extends Organism{
 
 	@Override
 	public void act(DrawingSurface game) {
-		if(game.millis()%(reproductionCount*1000)==0) {
+		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
+			reproductionIndex = 0;
 		}
-		if(game.millis()%(10000)==0) {
-			game.changeDNA(1);
-		}
+		game.changeDNA(1);
+		reproductionIndex++;
 	}
 	
 }
