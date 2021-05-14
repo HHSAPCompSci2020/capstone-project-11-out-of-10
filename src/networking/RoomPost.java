@@ -11,7 +11,7 @@ public class RoomPost {
 	
 	private String name;
 	private int playerMax;
-	private HashMap<String, PlayerPost> players;
+	private int playerCount;
 	
 	/**
 	 * Creates a new room representation with default values of zero or null
@@ -28,7 +28,7 @@ public class RoomPost {
 	public RoomPost(String name, int playerMax) {
 		this.name = name;
 		this.playerMax = playerMax;
-		this.players = new HashMap<String, PlayerPost>();
+		this.playerCount = 0;
 	}
 	
 	public String getName() {
@@ -39,12 +39,12 @@ public class RoomPost {
 		return playerMax;
 	}
 	
-	public HashMap<String, PlayerPost> getPlayers() {
-		return players;
+	public int getPlayerCount() {
+		return playerCount;
 	}
 	
 	public String toString() {
-		return "Name: " + name + ", Players: " + players.size() + "/" + playerMax;
+		return "Name: " + name + ", Players: " + playerCount + "/" + playerMax;
 	}
 
 }
