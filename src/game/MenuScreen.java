@@ -27,6 +27,11 @@ import networking.RoomPost;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 
+/**
+ * Represents the menu used to choose a room
+ * @author Nir Reiter
+ *
+ */
 public class MenuScreen extends JPanel  {
 	
 	private JFrame window;
@@ -38,6 +43,10 @@ public class MenuScreen extends JPanel  {
 	
 	private DatabaseReference database;
 
+	/**
+	 * Creates a new menu screen, referencing the database where all the rooms are stored
+	 * @param database The reference to the level of the database under which all rooms are stored
+	 */
 	public MenuScreen(DatabaseReference database) {
 		
 		this.database = database;
@@ -78,6 +87,7 @@ public class MenuScreen extends JPanel  {
 		
 	}
 	
+	@Override
 	public void show() {
 		window = new JFrame();
 		window.add(this);
@@ -86,6 +96,10 @@ public class MenuScreen extends JPanel  {
 		window.setVisible(true);
 	}
 	
+	/**
+	 * Joins a room with the given name
+	 * @param selection The name of the room to join
+	 */
 	private void joinRoom(String selection) {
 		
 		database.orderByChild("name").equalTo(selection).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,6 +148,11 @@ public class MenuScreen extends JPanel  {
 		
 	}
 	
+	/**
+	 * Listens to changes in room information (new rooms added, number of players changes)
+	 * @author Nir Reiter
+	 *
+	 */
 	public class RoomChangeListener implements ChildEventListener {
 		
 		@Override
@@ -182,6 +201,11 @@ public class MenuScreen extends JPanel  {
 		
 	}
 	
+	/**
+	 * Listens to Swing actions in the Menu
+	 * @author Nir Reiter
+	 *
+	 */
 	private class ActionHandler implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {

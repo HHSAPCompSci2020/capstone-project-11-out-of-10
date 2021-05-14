@@ -99,10 +99,18 @@ public class Player extends Sprite {
 		return hasChanged;
 	}
 	
+	/**
+	 * Gets the data object which corresponds to the Player's current state
+	 * @return A new PlayerPost with correct fields
+	 */
 	public PlayerPost getDataObject() {
 		return new PlayerPost(balance, rect.x, rect.y);
 	}
 	
+	/**
+	 * Sets this Player to match database information
+	 * @param post The PlayerPost with the information
+	 */
 	public void matchPost(PlayerPost post) {
 		setLocation(post.getX(), post.getY());
 		balance = post.getBalance();
