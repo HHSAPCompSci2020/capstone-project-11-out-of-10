@@ -60,6 +60,7 @@ public class DrawingSurface extends PApplet {
 		obstacles = new ArrayList<Sprite>();
 		buttons = new ArrayList<GButton>();
 		players = new HashMap<String, Player>();
+		organisms = new ArrayList<Organism>();
 		
 		this.room = room;
 		thisPlayerRef = room.child("players").push();
@@ -91,10 +92,9 @@ public class DrawingSurface extends PApplet {
 		// on program exit
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
+				thisPlayerRef.removeValueAsync();
 				if (players.size() == 0)
-					room.removeValueAsync();
-				else
-					thisPlayerRef.removeValueAsync();
+					room.removeValueAsync();		
 			}
 		});
 	}
@@ -224,7 +224,7 @@ public class DrawingSurface extends PApplet {
 	
 	
 	
-	class PlayerListener implements ChildEventListener {
+	public class PlayerListener implements ChildEventListener {
 		
 		private ConcurrentLinkedQueue<Runnable> tasks;
 		
@@ -295,7 +295,7 @@ public class DrawingSurface extends PApplet {
 		
 	}
 	
-	class OrganismListener implements ChildEventListener {
+	public class OrganismListener implements ChildEventListener {
 		
 		private ConcurrentLinkedQueue<Runnable> tasks;
 

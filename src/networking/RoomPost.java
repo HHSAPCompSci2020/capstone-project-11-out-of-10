@@ -1,12 +1,12 @@
 package networking;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RoomPost {
 	
 	private String name;
 	private int playerMax;
-	private ArrayList<PlayerPost> players;
+	private HashMap<String, PlayerPost> players;
 	
 	public RoomPost() {
 		
@@ -15,7 +15,7 @@ public class RoomPost {
 	public RoomPost(String name, int playerMax) {
 		this.name = name;
 		this.playerMax = playerMax;
-		this.players = new ArrayList<PlayerPost>();
+		this.players = new HashMap<String, PlayerPost>();
 	}
 	
 	public String getName() {
@@ -26,7 +26,7 @@ public class RoomPost {
 		return playerMax;
 	}
 	
-	public ArrayList<PlayerPost> getPlayers() {
+	public HashMap<String, PlayerPost> getPlayers() {
 		return players;
 	}
 	
