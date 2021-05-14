@@ -271,7 +271,7 @@ public class MenuScreen extends JPanel  {
 				int playerMax;
 				try {
 					playerMax = Integer.valueOf(JOptionPane.showInputDialog("Maximum Players?"));
-					if (playerMax < 2) {
+					if (playerMax < 1) {
 						JOptionPane.showMessageDialog(MenuScreen.this, "Invalid number: must be greater than 1.");
 						return;
 					}

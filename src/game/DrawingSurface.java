@@ -116,9 +116,9 @@ public class DrawingSurface extends PApplet {
 
 					@Override
 					public void onDataChange(DataSnapshot snap) {
-						System.out.println(snap.getRef());
+						System.out.println(1);
 						int playerCount = snap.child("playerCount").getValue(Integer.class);
-						if (playerCount == 1) {
+						if (playerCount < 1) {
 							room.removeValueAsync();
 						} else {
 							room.child("playerCount").setValueAsync(playerCount - 1);
