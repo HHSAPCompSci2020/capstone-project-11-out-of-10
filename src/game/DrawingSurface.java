@@ -8,6 +8,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import g4p_controls.GAlign;
 import g4p_controls.GButton;
@@ -33,14 +34,15 @@ public class DrawingSurface extends PApplet {
 	
 	public ArrayList<Integer> keysHeld;
 	ArrayList<GButton> buttons;
-	private int animalDrawn;
+	public int animalDrawn;
+	public int lastOrganismTick;
 	
 	public int gameAreaWidth;
 	public int gameAreaHeight;
 	public ArrayList<Sprite> obstacles;
-	private ArrayList<Organism> organisms;
-	private int totalBerries;
-	private int totalDNA;
+	public ArrayList<Organism> organisms;
+	public int totalBerries;
+	public int totalDNA;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
 	
@@ -103,8 +105,25 @@ public class DrawingSurface extends PApplet {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				thisPlayerRef.removeValueAsync();
-				if (players.size() == 0)
-					room.removeValueAsync();		
+				room.addListenerForSingleValueEvent(new ValueEventListener() {
+
+					@Override
+					public void onCancelled(DatabaseError arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onDataChange(DataSnapshot snap) {
+						int playerCount = snap.getValue(Integer.class);
+						if (playerCount == 1) {
+							room.removeValueAsync();
+						} else {
+							room.child("playerCount").setValueAsync(playerCount - 1);
+						}
+					}
+					
+				});	
 			}
 		});
 	}
@@ -117,8 +136,14 @@ public class DrawingSurface extends PApplet {
 		if (thisPlayer.hasChanged())
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		for (Organism o : organisms)
-			o.act(this);
+		if (this.millis() > this.lastOrganismTick + 1000) {
+			for (Organism o : organisms)
+				o.act(this);
+			lastOrganismTick = this.millis();
+		}
+		
+		for (Organism o: organisms)
+			o.update(this);
 	}
 
 	@Override
@@ -225,7 +250,6 @@ public class DrawingSurface extends PApplet {
 		if (event == GEvent.CLICKED) {
 			for (int i = 0; i < buttons.size(); i++) {
 				if (button == buttons.get(i)) {
-					System.out.println(i);
 					animalDrawn = i;
 				}
 			}

@@ -42,6 +42,8 @@ public class MenuScreen extends JPanel  {
 	private JButton newRoomButton;
 	
 	private DatabaseReference database;
+	private DatabaseReference openRooms;
+	private DatabaseReference gameRooms;
 
 	/**
 	 * Creates a new menu screen, referencing the database where all the rooms are stored
@@ -50,7 +52,9 @@ public class MenuScreen extends JPanel  {
 	public MenuScreen(DatabaseReference database) {
 		
 		this.database = database;
-		database.addChildEventListener(new RoomChangeListener());
+		this.openRooms = database.child("openrooms");
+		this.gameRooms = database.child("gamerooms");
+		openRooms.addChildEventListener(new RoomChangeListener());
 		
 		// SWING GRAPHICS
 		
@@ -102,7 +106,7 @@ public class MenuScreen extends JPanel  {
 	 */
 	private void joinRoom(String selection) {
 		
-		database.orderByChild("name").equalTo(selection).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+		gameRooms.orderByChild("name").equalTo(selection).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onCancelled(DatabaseError error) {
 				System.out.println(error);
@@ -112,15 +116,24 @@ public class MenuScreen extends JPanel  {
 			public void onDataChange(DataSnapshot snap) {
 				
 				DataSnapshot room = snap.getChildren().iterator().next();
+				RoomPost post = room.getValue(RoomPost.class);
 				
-				if (!snap.hasChildren()) {
+				if (!snap.hasChildren())
+					return;
+				
+				if (post.getPlayerCount() >= post.getPlayerMax()) {
+					JOptionPane.showMessageDialog(MenuScreen.this, "Too many players in the room!");
 					return;
 				}
 				
-				if (room.child("players").getChildrenCount() >= room.child("playerMax").getValue(Integer.class)) {
-					JOptionPane.showMessageDialog(MenuScreen.this, "Room full");
-					return;
+				// tell the open room the player count has increased, or remove if reached maximum
+				DatabaseReference openRoom = openRooms.orderByChild("name").equalTo(selection).limitToFirst(1).getRef();
+				if (post.getPlayerCount() + 1 == post.getPlayerMax()) {
+					openRoom.removeValueAsync();
+				} else {
+					openRoom.child("playerCount").setValueAsync(post.getPlayerCount() + 1);
 				}
+				
 				
 				MenuScreen.this.window.setVisible(false);
 				
@@ -179,8 +192,14 @@ public class MenuScreen extends JPanel  {
 			
 		}
 		@Override
-		public void onChildChanged(DataSnapshot arg0, String arg1) {
-			// TODO Auto-generated method stub
+		public void onChildChanged(DataSnapshot snap, String arg1) {
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					// TODO
+				}
+			});
 			
 		}
 		@Override
@@ -237,7 +256,8 @@ public class MenuScreen extends JPanel  {
 				
 				RoomPost post = new RoomPost(name, playerMax);
 				
-				database.push().setValue(post, new CompletionListener() {
+				openRooms.push().setValueAsync(post);
+				gameRooms.push().setValue(post, new CompletionListener() {
 					@Override
 					public void onComplete(DatabaseError error, DatabaseReference ref) {
 						joinRoom(name);
