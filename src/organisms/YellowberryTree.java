@@ -6,6 +6,12 @@ import processing.core.PImage;
 public class YellowberryTree extends Organism {
 	private int reproductionIndex;
 	
+	/**
+	 * Constructs a YellowberryTree in the game
+	 * @param x x-coordinate of the tree
+	 * @param y y-coordinate of the tree
+	 * @param image
+	 */
 	public YellowberryTree(double x, double y, PImage image) {
 		super(x, y, 10, 20, 120/*reproduction*/, image);
 		reproductionIndex = 0;;

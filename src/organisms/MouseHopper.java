@@ -7,6 +7,12 @@ public class MouseHopper extends Animal {
 
 	private int reproductionIndex;
 	
+	/**
+	 * constructs a MouseHopper in the game
+	 * @param x x-coordinate of the Mousehopper
+	 * @param y y-coordinate of the MouseHopper
+	 * @param image image of the animal
+	 */
 	public MouseHopper(double x, double y, PImage image) {
 		super(x, y, 10, 20, 30/*reproduction*/, 10/*food*/, image);
 		reproductionIndex = 0;

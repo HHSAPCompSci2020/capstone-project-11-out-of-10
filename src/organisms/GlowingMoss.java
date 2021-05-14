@@ -6,6 +6,13 @@ import processing.core.PImage;
 public class GlowingMoss extends Organism{
 
 	private int reproductionIndex;
+	
+	/**
+	 * Constructs a GlowingMoss in the game
+	 * @param x x-coordinate of the GlowingMoss
+	 * @param y y-coordinate of the GlowingMoss
+	 * @param image image of the animal
+	 */
 	public GlowingMoss(double x, double y, PImage image) {
 		super(x, y, 10, 20, 20/*reproduction*/, image);
 		reproductionIndex = 0;

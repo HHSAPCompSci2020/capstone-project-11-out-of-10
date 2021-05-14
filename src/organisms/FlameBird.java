@@ -9,6 +9,12 @@ public class FlameBird extends Animal{
 
 	private int reproductionIndex;
 	
+	/**
+	 * Constructs a FlameBird
+	 * @param x x-coordinate of the FlameBird
+	 * @param y y-coordinate of the FlameBird
+	 * @param image image of the animal
+	 */
 	public FlameBird(double x, double y, PImage image) {
 		super(x, y, 10, 20, 50/*reproduction*/, 10/*food*/, image);
 		reproductionIndex = 0;
