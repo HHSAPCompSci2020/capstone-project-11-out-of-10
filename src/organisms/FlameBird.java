@@ -9,8 +9,8 @@ public class FlameBird extends Animal{
 
 	private int currencyIndex;
 	
-	public FlameBird(double x, double y, double w, double h, PImage image, DrawingSurface game) {
-		super(x, y, w, h, 45/*reproduction*/, 10/*food*/, image, game);
+	public FlameBird(double x, double y, PImage image) {
+		super(x, y, 10, 20, 45/*reproduction*/, 10/*food*/, image);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class FlameBird extends Animal{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.add(new FlameBird(getX()+10,getY(),getWidth(),getHeight(),image,game));
+		game.add(new FlameBird(getX()+10,getY(),image));
 	}
 
 	

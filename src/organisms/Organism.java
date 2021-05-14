@@ -14,7 +14,7 @@ import sprite.Sprite;
 public abstract class Organism extends Sprite {
 	protected int reproductionCount;
 	
-	public Organism(double x, double y, double w, double h, int count, PImage image, DrawingSurface game) {
+	public Organism(double x, double y, double w, double h, int count, PImage image) {
 		super(x, y, w, h, image);
 		reproductionCount = count;
 	}
@@ -50,17 +50,27 @@ public abstract class Organism extends Sprite {
 		return -1;
 	}
 	
-	public static Organism createOrganismFromCode(int c, double x, double y) {
-		if (c == 0)
-			return new YellowberryTree(x, y);
-		if (c == 1)
-			return new GlowingMoss(x, y);
-		if (c == 2)
-			return new MouseHopper(x, y);
-		if (c == 3)
-			return new FlameBird(x, y);
-		if (c == 4)
-			return new FluffyRam(x, y);
+	public static Organism createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
+		if (c == 0) {
+			d.changeDNA(-100);
+			return new YellowberryTree(x, y, DrawingSurface.organismImages.get(0));
+		}
+		if (c == 1) {
+			d.changeDNA(-30);
+			return new GlowingMoss(x, y, DrawingSurface.organismImages.get(1));
+		}
+		if (c == 2) {
+			d.changeDNA(-50);
+			return new MouseHopper(x, y, DrawingSurface.organismImages.get(2));
+		}
+		if (c == 3) {
+			d.changeDNA(-60);
+			return new FlameBird(x, y, DrawingSurface.organismImages.get(3));
+		}
+		if (c == 4) {
+			d.changeDNA(-90);
+			return new FluffyRam(x, y, DrawingSurface.organismImages.get(4));
+		}
 		
 		return null;
 	}

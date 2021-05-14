@@ -5,15 +5,14 @@ import processing.core.PImage;
 
 public class GlowingMoss extends Organism{
 
-	public GlowingMoss(double x, double y, double w, double h, PImage image,
-			DrawingSurface game) {
-		super(x, y, w, h, 20/*reproduction*/, image, game);
+	public GlowingMoss(double x, double y, PImage image) {
+		super(x, y, 10, 20, 20/*reproduction*/, image);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.add(new GlowingMoss(getX()+10,getY(),getWidth(),getHeight(),image,game));
+		game.add(new GlowingMoss(getX()+10,getY(),image));
 		
 	}
 

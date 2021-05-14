@@ -5,8 +5,8 @@ import processing.core.PImage;
 
 public class MouseHopper extends Animal {
 
-	public MouseHopper(double x, double y, double w, double h, PImage image, DrawingSurface game) {
-		super(x, y, w, h, 30/*reproduction*/, 10/*food*/, image, game);
+	public MouseHopper(double x, double y, PImage image) {
+		super(x, y, 10, 20, 30/*reproduction*/, 10/*food*/, image);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -22,7 +22,7 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.add(new MouseHopper(getX()+10,getY(),getWidth(),getHeight(),image,game));
+		game.add(new MouseHopper(getX()+10,getY(),image));
 		
 	}
 

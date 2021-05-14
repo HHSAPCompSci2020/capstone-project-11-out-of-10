@@ -206,6 +206,7 @@ public class DrawingSurface extends PApplet {
 		return 0;
 	}
 	
+	@Override
 	public void mousePressed() {
 		if (animalDrawn >= 0 && animalDrawn <= 4) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);

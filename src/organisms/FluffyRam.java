@@ -7,8 +7,8 @@ import processing.core.PImage;
 
 public class FluffyRam extends Animal {
 
-	public FluffyRam(double x, double y, double w, double h, PImage image, DrawingSurface game) {
-		super(x, y, w, h, 60/*reproduction*/, 10/*food*/, image, game);
+	public FluffyRam(double x, double y, PImage image) {
+		super(x, y, 10, 20, 60/*reproduction*/, 10/*food*/, image);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -27,7 +27,7 @@ public class FluffyRam extends Animal {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.add(new FluffyRam(getX()+10,getY(),getWidth(),getHeight(),image,game));
+		game.add(new FluffyRam(getX()+10,getY(),image));
 	}
 
 	@Override
