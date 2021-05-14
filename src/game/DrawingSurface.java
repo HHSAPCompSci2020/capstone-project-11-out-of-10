@@ -47,6 +47,7 @@ public class DrawingSurface extends PApplet {
 	
 	public static PImage playerImage;
 	public static PImage obstacleImage;
+	public static ArrayList<PImage> organismImages;
 
 	public DatabaseReference room;
 	public DatabaseReference thisPlayerRef;
@@ -62,6 +63,8 @@ public class DrawingSurface extends PApplet {
 		players = new HashMap<String, Player>();
 		organisms = new ArrayList<Organism>();
 		
+		organismImages = new ArrayList<PImage>();
+		
 		this.room = room;
 		thisPlayerRef = room.child("players").push();
 		
@@ -73,12 +76,17 @@ public class DrawingSurface extends PApplet {
 	public void setup() {
 		playerImage = loadImage("player.png");
 		obstacleImage = loadImage("obstacle.png");
+		organismImages.add(loadImage("yellowberry_tree.png"));
+		organismImages.add(loadImage("glowing_moss.png"));
+		organismImages.add(loadImage("mouse_hopper.png"));
+		organismImages.add(loadImage("flame_bird.png"));
+		organismImages.add(loadImage("fluffy_ram.png"));
 		
-		buttons.add(new GButton(this, 40,  500, 80, 30, "Button 1"));
-		buttons.add(new GButton(this, 190, 500, 80, 30, "Button 2"));
-		buttons.add(new GButton(this, 340, 500, 80, 30, "Button 3"));
-		buttons.add(new GButton(this, 490, 500, 80, 30, "Button 4"));
-		buttons.add(new GButton(this, 640, 500, 80, 30, "Button 5"));
+		buttons.add(new GButton(this, 40,  500, 80, 30, "Yellowberry Tree"));
+		buttons.add(new GButton(this, 190, 500, 80, 30, "Glowing Moss"));
+		buttons.add(new GButton(this, 340, 500, 80, 30, "Mouse Hopper"));
+		buttons.add(new GButton(this, 490, 500, 80, 30, "Flame Bird"));
+		buttons.add(new GButton(this, 640, 500, 80, 30, "Fluffy Ram"));
 		for (GButton b : buttons)
 			b.fireAllEvents(true);
 
@@ -103,6 +111,9 @@ public class DrawingSurface extends PApplet {
 		thisPlayer.update(this);
 		if (thisPlayer.hasChanged())
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
+		
+		for (Organism o : organisms)
+			o.act(this);
 	}
 
 	@Override
@@ -117,22 +128,25 @@ public class DrawingSurface extends PApplet {
 		translate(WIDTH/2, HEIGHT/2);
 		translate(-(float)thisPlayer.getX(), -(float)thisPlayer.getY());
 		
+		// EVERYTHING THAT IS ON THE GAME FIELD (CAN LEAVE PLAYER FIELD OF VIEW) DRAW BELOW HERE
+		
 		fill(150, 100, 0);
 		rect(0, 0, gameAreaWidth, gameAreaHeight); // map background
 		
 		thisPlayer.draw(this);
 		for (Sprite s : obstacles)
 			s.draw(this);
+		for (Player p : players.values())
+			p.draw(this);
+		for(Organism o : organisms) {
+			o.draw(this);
+		}
 		
 		popMatrix();
 		
 		// ALL UI ELEMENTS DRAW BELOW HERE
 		
-		for(Organism o : organisms) {
-			o.draw(this);
-		}
-		
-		String text = "animal1: " + "number    " + "animal2: " + "number    " + "animal3: " + "number    " + "animal4: "+ "number    " + "animal5: " + "number    " + "Animal selected: " + animalDrawn + "     coins: " + totalDNA;
+		String text = "Animal selected: " + animalDrawn + "     coins: " + totalDNA;
 		fill(0);
 		text(text, 10, 20);
 	}
@@ -172,18 +186,24 @@ public class DrawingSurface extends PApplet {
 	
 	public void mousePressed() {
 		if (animalDrawn >= 1 && animalDrawn <= 5) {
-			/*Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
-			obstacles.add(new Sprite(newLocation.x-5, newLocation.y-5, 10, 10, loadImage("obstacle.png")));*/
-			if(animalDrawn == 1)
-				add(new FlameBird(mouseX,mouseY,10,20,loadImage("FlameBird.png"),this));
-			else if(animalDrawn == 2)
-				add(new FluffyRam(mouseX,mouseY,10,20,loadImage("FluffyRam.png"),this));
-			else if(animalDrawn == 3)
-				add(new GlowingMoss(mouseX,mouseY,10,20,loadImage("GlowingMoss.png"),this));
-			else if(animalDrawn == 4)
-				add(new MouseHopper(mouseX,mouseY,10,20,loadImage("MouseHopper.png"),this));
-			else if(animalDrawn == 5)
-				add(new YellowberryTree(mouseX,mouseY,10,20,loadImage("YellowberryTree.png"),this));
+			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
+			PImage imageToUse = organismImages.get(animalDrawn - 1);
+			
+			if (animalDrawn == 1)
+				add(new YellowberryTree(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
+			
+			else if (animalDrawn == 2)
+				add(new GlowingMoss(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
+				
+			else if (animalDrawn == 3)
+				add(new MouseHopper(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
+				
+			else if (animalDrawn == 4)
+				add(new FlameBird(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
+			
+			else if (animalDrawn == 5)
+				add(new FluffyRam(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
+				
 			animalDrawn = 0;
 		}
 	}

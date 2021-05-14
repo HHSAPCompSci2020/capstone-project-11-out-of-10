@@ -13,7 +13,7 @@ import processing.core.PImage;
  */
 public class Sprite {
 
-	public static boolean debug = true;
+	public static boolean debug = false;
 	
 	protected PImage image;
 	protected Rectangle2D.Double rect;
@@ -64,7 +64,7 @@ public class Sprite {
 	}
 	
 	/**
-	 * Should be called every frame by the game.
+	 * Should be called every frame by the game. Moves the Sprite by its velocity.
 	 * @param game The DrawingSurface that the player is located on.
 	 */
 	public void update(DrawingSurface game) {
