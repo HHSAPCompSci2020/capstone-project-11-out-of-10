@@ -57,6 +57,7 @@ public class DrawingSurface extends PApplet {
 	 */
 	public DrawingSurface(DatabaseReference room) {
 		keysHeld = new ArrayList<Integer>();
+		animalDrawn = -1;
 		
 		gameAreaWidth = 5000;
 		gameAreaHeight = 3000;
@@ -92,8 +93,6 @@ public class DrawingSurface extends PApplet {
 		buttons.add(new GButton(this, 640, 500, 80, 30, "Fluffy Ram"));
 		for (GButton b : buttons)
 			b.fireAllEvents(true);
-
-		animalDrawn = 0;
 		
 		thisPlayer = new Player(30, 30, playerImage);
 		obstacles.add(new Sprite(150, 150, 300, 50, obstacleImage));
@@ -208,26 +207,11 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void mousePressed() {
-		if (animalDrawn >= 1 && animalDrawn <= 5) {
+		if (animalDrawn >= 0 && animalDrawn <= 4) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
-			PImage imageToUse = organismImages.get(animalDrawn - 1);
-			
-			if (animalDrawn == 1)
-				add(new YellowberryTree(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
-			
-			else if (animalDrawn == 2)
-				add(new GlowingMoss(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
-				
-			else if (animalDrawn == 3)
-				add(new MouseHopper(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
-				
-			else if (animalDrawn == 4)
-				add(new FlameBird(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
-			
-			else if (animalDrawn == 5)
-				add(new FluffyRam(newLocation.x, newLocation.y, 10, 20, imageToUse, this));
-				
-			animalDrawn = 0;
+			PImage imageToUse = organismImages.get(animalDrawn);
+			organisms.add(Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y));
+			animalDrawn = -1;
 		}
 	}
 
@@ -241,7 +225,7 @@ public class DrawingSurface extends PApplet {
 			for (int i = 0; i < buttons.size(); i++) {
 				if (button == buttons.get(i)) {
 					System.out.println(i);
-					animalDrawn = i+1;
+					animalDrawn = i;
 				}
 			}
 		}
