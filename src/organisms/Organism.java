@@ -17,7 +17,6 @@ public abstract class Organism extends Sprite {
 	public Organism(double x, double y, double w, double h, int count, PImage image, DrawingSurface game) {
 		super(x, y, w, h, image);
 		reproductionCount = count;
-		game.add(this);
 	}
 	
 	public void move(double dx, double dy) {

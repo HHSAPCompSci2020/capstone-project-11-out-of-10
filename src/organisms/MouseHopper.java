@@ -22,7 +22,7 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		MouseHopper x = new MouseHopper(getX()+10,getY(),getWidth(),getHeight(),image,game);
+		game.add(new MouseHopper(getX()+10,getY(),getWidth(),getHeight(),image,game));
 		
 	}
 

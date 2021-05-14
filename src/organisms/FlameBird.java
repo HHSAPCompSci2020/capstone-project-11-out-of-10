@@ -53,7 +53,7 @@ public class FlameBird extends Animal{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		FlameBird x = new FlameBird(getX()+10,getY(),getWidth(),getHeight(),image,game);
+		game.add(new FlameBird(getX()+10,getY(),getWidth(),getHeight(),image,game));
 	}
 
 	

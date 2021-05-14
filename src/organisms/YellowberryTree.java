@@ -14,8 +14,7 @@ public class YellowberryTree extends Organism {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		YellowberryTree x = new YellowberryTree(getX()+10,getY(),getWidth(),getHeight(),image,game);
-		
+		game.add(new YellowberryTree(getX()+10,getY(),getWidth(),getHeight(),image,game));
 	}
 
 	@Override

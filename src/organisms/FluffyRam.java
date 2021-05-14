@@ -27,7 +27,7 @@ public class FluffyRam extends Animal {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		FluffyRam x = new FluffyRam(getX()+10,getY(),getWidth(),getHeight(),image,game);
+		game.add(new FluffyRam(getX()+10,getY(),getWidth(),getHeight(),image,game));
 	}
 
 	@Override

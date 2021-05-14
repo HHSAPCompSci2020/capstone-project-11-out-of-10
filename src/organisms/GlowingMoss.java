@@ -13,7 +13,7 @@ public class GlowingMoss extends Organism{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		GlowingMoss x = new GlowingMoss(getX()+10,getY(),getWidth(),getHeight(),image,game);
+		game.add(new GlowingMoss(getX()+10,getY(),getWidth(),getHeight(),image,game));
 		
 	}
 

@@ -21,7 +21,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GLabel;
 import networking.PlayerPost;
 import organisms.Organism;
-import organisms.YellowberryTree;
+import organisms.*;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprite.Player;
@@ -168,8 +168,18 @@ public class DrawingSurface extends PApplet {
 	
 	public void mousePressed() {
 		if (animalDrawn >= 1 && animalDrawn <= 5) {
-			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
-			obstacles.add(new Sprite(newLocation.x-5, newLocation.y-5, 10, 10, loadImage("obstacle.png")));
+			/*Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
+			obstacles.add(new Sprite(newLocation.x-5, newLocation.y-5, 10, 10, loadImage("obstacle.png")));*/
+			if(animalDrawn == 1)
+				add(new FlameBird(mouseX,mouseY,10,20,loadImage("FlameBird.png"),this));
+			else if(animalDrawn == 2)
+				add(new FluffyRam(mouseX,mouseY,10,20,loadImage("FluffyRam.png"),this));
+			else if(animalDrawn == 3)
+				add(new GlowingMoss(mouseX,mouseY,10,20,loadImage("GlowingMoss.png"),this));
+			else if(animalDrawn == 4)
+				add(new MouseHopper(mouseX,mouseY,10,20,loadImage("MouseHopper.png"),this));
+			else if(animalDrawn == 5)
+				add(new YellowberryTree(mouseX,mouseY,10,20,loadImage("YellowberryTree.png"),this));
 			animalDrawn = 0;
 		}
 	}
