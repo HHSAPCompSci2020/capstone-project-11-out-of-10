@@ -4,11 +4,11 @@ import game.DrawingSurface;
 import processing.core.PImage;
 
 public class YellowberryTree extends Organism {
-	private int berryCount;
+	private int reproductionIndex;
 	
 	public YellowberryTree(double x, double y, PImage image) {
 		super(x, y, 10, 20, 120/*reproduction*/, image);
-		berryCount = 10;
+		reproductionIndex = 0;;
 	}
 
 	@Override
@@ -23,15 +23,13 @@ public class YellowberryTree extends Organism {
 
 	@Override
 	public void act(DrawingSurface game) { // remember to add berries as well
-		if(game.millis()%(reproductionCount*1000)==0) {
+		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
+			reproductionIndex = 0;
 		}
-		if(game.millis()%(berryCount*1000)==0) {
-			game.setTotalBerries(game.getTotalBerries()+1);
-		}
-		if(game.millis()%(10000)==0) {
-			game.changeDNA(3);
-		}
+		game.setTotalBerries(game.getTotalBerries()+1);
+		game.changeDNA(3);
+		reproductionIndex++;
 	}
 
 }

@@ -6,10 +6,11 @@ import game.DrawingSurface;
 import processing.core.PImage;
 
 public class FluffyRam extends Animal {
+	private int reproductionIndex;
 
 	public FluffyRam(double x, double y, PImage image) {
 		super(x, y, 10, 20, 60/*reproduction*/, 10/*food*/, image);
-		// TODO Auto-generated constructor stub
+		reproductionIndex=0;
 	}
 
 
@@ -37,17 +38,15 @@ public class FluffyRam extends Animal {
 
 	@Override
 	public void act(DrawingSurface game) {
-		if(game.millis()%(foodCount*1000)==0) {
-			if(!eat(game)) {
-				System.out.println("NOFOODFORFLUFFYRAM");
-			}
+		if(!eat(game)) {
+			System.out.println("NOFOODFORFLUFFYRAM");
 		}
-		if(game.millis()%(reproductionCount*1000)==0) {
+		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
+			reproductionIndex = 0;
 		}
-		if(game.millis()%(10000)==0) {
-			game.changeDNA(3);
-		}
+		game.changeDNA(3);
+		reproductionIndex++;
 	}
 
 
