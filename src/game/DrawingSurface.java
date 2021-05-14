@@ -43,6 +43,7 @@ public class DrawingSurface extends PApplet {
 	private int totalDNA;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
+	private int timer;
 	
 	public static PImage playerImage;
 	public static PImage obstacleImage;
@@ -117,8 +118,11 @@ public class DrawingSurface extends PApplet {
 		if (thisPlayer.hasChanged())
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		for (Organism o : organisms)
-			o.act(this);
+		 if (millis() - timer >= 10000) {
+			 for (Organism o : organisms)
+					o.act(this);
+			 timer = millis();
+		 }
 	}
 
 	@Override
