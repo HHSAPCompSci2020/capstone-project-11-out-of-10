@@ -38,7 +38,7 @@ public class Player extends Sprite {
 	 */
 	public Player(int x, int y, PImage image) { 
 		super(x, y, WIDTH, HEIGHT, image);
-		this.balance = 100;
+		this.balance = 300;
 	}
 	
 	/**

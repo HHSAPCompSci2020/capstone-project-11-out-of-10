@@ -132,8 +132,9 @@ public class DrawingSurface extends PApplet {
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
 		if (this.millis() > this.lastOrganismTick + TICK_RATE) {
-			for (Organism o : organisms)
-				o.act(this);
+			for (int i = 0; i < organisms.size(); i++) {
+				organisms.get(i).act(this);
+			}
 			lastOrganismTick = this.millis();
 		}
 		
