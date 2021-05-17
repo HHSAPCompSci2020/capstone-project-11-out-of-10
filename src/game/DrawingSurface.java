@@ -53,12 +53,16 @@ public class DrawingSurface extends PApplet {
 
 	public DatabaseReference room;
 	public DatabaseReference thisPlayerRef;
+	public DatabaseReference openRoom;
+	public int playerMax;
+	
+	public boolean gameStarted;
 	
 	/**
 	 * Create a new DrawingSurface which uses a room in the database
 	 * @param room The DatabaseReference for the room the player is in
 	 */
-	public DrawingSurface(DatabaseReference room) {
+	public DrawingSurface(DatabaseReference openRoom, DatabaseReference room, int playerMax) {
 		keysHeld = new ArrayList<Integer>();
 		animalDrawn = -1;
 		
@@ -69,14 +73,17 @@ public class DrawingSurface extends PApplet {
 		buttons = new ArrayList<GButton>();
 		players = new HashMap<String, Player>();
 		organisms = new ArrayList<Organism>();
-		
 		organismImages = new ArrayList<PImage>();
 		
+		this.openRoom = openRoom;
 		this.room = room;
+		this.playerMax = playerMax;
 		thisPlayerRef = room.child("players").push();
 		
 		room.child("players").addChildEventListener(new PlayerListener());
 		room.child("organisms").addChildEventListener(new OrganismListener());
+		
+		gameStarted = false;
 	}
 	
 	@Override
@@ -105,27 +112,13 @@ public class DrawingSurface extends PApplet {
 		// on program exit
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
+				System.out.println(players);
 				thisPlayerRef.removeValueAsync();
-				room.addListenerForSingleValueEvent(new ValueEventListener() {
-
-					@Override
-					public void onCancelled(DatabaseError arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onDataChange(DataSnapshot snap) {
-						System.out.println(1);
-						int playerCount = snap.child("playerCount").getValue(Integer.class);
-						if (playerCount < 1) {
-							room.removeValueAsync();
-						} else {
-							room.child("playerCount").setValueAsync(playerCount - 1);
-						}
-					}
-					
-				});	
+				if (players.size() == 0) {
+					room.removeValueAsync();
+					openRoom.removeValueAsync();
+				} else if (!gameStarted) // once the game starts, open room no longer exists
+					openRoom.child("playerCount").setValueAsync(players.size());
 			}
 		});
 	}
