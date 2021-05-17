@@ -32,6 +32,8 @@ public class DrawingSurface extends PApplet {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 	
+	public static final int TICK_RATE = 10000; // milliseconds between ticks
+	
 	public ArrayList<Integer> keysHeld;
 	ArrayList<GButton> buttons;
 	public int animalDrawn;
@@ -45,7 +47,6 @@ public class DrawingSurface extends PApplet {
 	public int totalDNA;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
-	private int timer;
 	
 	public static PImage playerImage;
 	public static PImage obstacleImage;
@@ -130,7 +131,7 @@ public class DrawingSurface extends PApplet {
 		thisPlayer.update(this);
 		if (thisPlayer.hasChanged())
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
-		if (this.millis() > this.lastOrganismTick + 10000) {
+		if (this.millis() > this.lastOrganismTick + TICK_RATE) {
 			for (int i = 0; i < organisms.size(); i++)
 				organisms.get(i).act(this);
 			lastOrganismTick = this.millis();
@@ -368,7 +369,7 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	/**
-	 * Listens to changes in the organisms in of the room
+	 * Listens to changes in the organisms of the room
 	 * @author Nir Reiter
 	 *
 	 */
