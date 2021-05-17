@@ -44,6 +44,8 @@ public class MenuScreen extends JPanel  {
 	private DatabaseReference database;
 	private DatabaseReference openRooms;
 	private DatabaseReference gameRooms;
+	
+	private DatabaseReference openRoomToJoin;
 
 	/**
 	 * Creates a new menu screen, referencing the database where all the rooms are stored
@@ -55,6 +57,7 @@ public class MenuScreen extends JPanel  {
 		this.openRooms = database.child("openrooms");
 		this.gameRooms = database.child("gamerooms");
 		openRooms.addChildEventListener(new RoomChangeListener());
+		openRoomToJoin = null;
 		
 		// SWING GRAPHICS
 		
@@ -124,8 +127,11 @@ public class MenuScreen extends JPanel  {
 				
 				if (post.getPlayerCount() >= post.getPlayerMax()) {
 					JOptionPane.showMessageDialog(MenuScreen.this, "Too many players in the room!");
+					openRoomToJoin = null;
 					return;
 				}
+				
+				openRoomToJoin = room.getRef();
 				
 				if (post.getPlayerCount() + 1 == post.getPlayerMax()) {
 					room.getRef().removeValueAsync();
@@ -146,24 +152,17 @@ public class MenuScreen extends JPanel  {
 			@Override
 			public void onDataChange(DataSnapshot snap) {
 				
-				if (!snap.hasChildren())
+				if (!snap.hasChildren() || openRoomToJoin == null)
 					return;
 				
 				DataSnapshot room = snap.getChildren().iterator().next();
 				RoomPost post = room.getValue(RoomPost.class);
 				
-				if (post.getPlayerCount() >= post.getPlayerMax()) {
-					JOptionPane.showMessageDialog(MenuScreen.this, "Too many players in the room!");
-					return;
-				}
-				
-				room.child("playerCount").getRef().setValueAsync(post.getPlayerCount() + 1);
-				
 				// Creating the Processing window
 				
 				MenuScreen.this.window.setVisible(false);
 				
-				DrawingSurface drawing = new DrawingSurface(room.getRef());
+				DrawingSurface drawing = new DrawingSurface(openRoomToJoin, room.getRef(), post.getPlayerMax());
 				PApplet.runSketch(new String[]{""}, drawing);
 				
 				PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
@@ -185,6 +184,40 @@ public class MenuScreen extends JPanel  {
 			}
 		});
 		
+	}
+	
+	public void leaveRoom(DatabaseReference gameRoom) {
+		
+		gameRoom.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot snap) {
+				openRooms.orderByChild("name").equalTo(snap.getValue(String.class)).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+
+					@Override
+					public void onCancelled(DatabaseError arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onDataChange(DataSnapshot snap) {
+						if (!snap.hasChildren())
+							return;
+						
+						DataSnapshot room = snap.getChildren().iterator().next();
+						RoomPost post = room.getValue(RoomPost.class);
+						room.child("playerCount").getRef().setValueAsync(post.getPlayerCount() + 1);
+					}
+				});
+			}
+		});
 	}
 	
 	/**
