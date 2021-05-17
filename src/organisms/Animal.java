@@ -28,9 +28,9 @@ public abstract class Animal extends Organism {
 	 * @param foodCount how often the animal eats in seconds
 	 * @param image image of the animal
 	 */
-	public Animal(double x, double y, double w, double h, int reproductionCount, int foodCount, PImage image) {
-		super(x, y, w, h, reproductionCount, image);
-		this.foodCount = foodCount;
+	public Animal(double x, double y, double w, double h, PImage image, int reproductionTicks, int cost, int value, int foodValue) {
+		super(x, y, w, h, image, reproductionTicks, cost, value, foodValue);
+		this.foodCount = 0;
 		needToEat = false;
 	}
 	
@@ -39,6 +39,32 @@ public abstract class Animal extends Organism {
 	 * @param game The DrawingSurface the animal is in
 	 * @return whether the animal has enough to eat or not
 	 */
-	public abstract boolean eat(DrawingSurface game);
+	public abstract boolean tryToEat(DrawingSurface game);
+	
+	@Override
+	public void update(DrawingSurface game) {
+		if (target != null) {
+			if (needToEat)
+				move(Math.atan2(target.getX() - getX(), target.getY() - getY()) - Math.PI/2, 10);
+			
+			if(game.distance(this, target) < 10) {
+				velocityX = 0;
+				velocityY = 0;
+				
+				target = null;
+			}
+		}
+		super.update(game);
+	}
+	
+	@Override
+	public void act(DrawingSurface game) {
+		needToEat = true;
+		if(!tryToEat(game)) {
+			System.out.println("No food for " + this);
+			this.remove(game);
+		}
+		super.act(game);
+	}
 	
 }

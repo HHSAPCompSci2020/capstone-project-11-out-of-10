@@ -91,6 +91,10 @@ public class Player extends Sprite {
 		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
 	}
 	
+	public void changeBalance(int change) {
+		balance += change;
+	}
+	
 	public double getBalance() {
 		return balance;
 	}

@@ -1,7 +1,5 @@
 package organisms;
 
-import java.util.ArrayList;
-
 import game.DrawingSurface;
 import processing.core.PImage;
 import sprite.Sprite;
@@ -12,7 +10,12 @@ import sprite.Sprite;
  *
  */
 public abstract class Organism extends Sprite {
-	protected int reproductionCount;
+	
+	protected int reproductionTicks;
+	protected int reproductionIndex;
+	protected int cost;
+	protected int value;
+	protected int foodValue;
 	
 	/**
 	 * Constructs the organism in the game
@@ -23,9 +26,12 @@ public abstract class Organism extends Sprite {
 	 * @param count how often the animal reproduces
 	 * @param image image of the animal
 	 */
-	public Organism(double x, double y, double w, double h, int count, PImage image) {
+	public Organism(double x, double y, double w, double h, PImage image, int reproductionTicks, int cost, int value, int foodValue) {
 		super(x, y, w, h, image);
-		reproductionCount = count;
+		this.reproductionTicks = reproductionTicks;
+		this.cost = cost;
+		this.value = value;
+		this.foodValue = foodValue;
 	}
 	
 	/**
@@ -51,18 +57,19 @@ public abstract class Organism extends Sprite {
 	 * @param game DrawingSurface the organism is in
 	 */
 	public abstract void reproduce(DrawingSurface game);
-
-	/**
-	 * gets the cost of the organism
-	 * @return the cost of the organism
-	 */
-	public abstract int getCost();
 	
 	/**
 	 * Something that is called every 10 seconds, what the organism does
 	 * @param game DrawingSurface that the organism is in
 	 */
-	public abstract void act(DrawingSurface game);
+	public void act(DrawingSurface game) {
+		if(reproductionIndex >= reproductionTicks) {
+			reproduce(game);
+			reproductionIndex = 0;
+		}
+		game.changeDNA(getDNAValue());
+		reproductionIndex++;
+	}
 	
 	/**
 	 * gets the index (number) of the organism
@@ -90,31 +97,56 @@ public abstract class Organism extends Sprite {
 	 * @param x x-coordinate of the Organism
 	 * @param y y-coordinate of the Organism
 	 * @param d DrawingSurface the Organism will be in
-	 * @returnx
+	 * @return
 	 */
-	public static Organism createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
-		if (c == 0) {
-			d.changeDNA(-100);
-			return new YellowberryTree(x, y, DrawingSurface.organismImages.get(0));
-		}
-		if (c == 1) {
-			d.changeDNA(-30);
-			return new GlowingMoss(x, y, DrawingSurface.organismImages.get(1));
-		}
-		if (c == 2) {
-			d.changeDNA(-50);
-			return new MouseHopper(x, y, DrawingSurface.organismImages.get(2));
-		}
-		if (c == 3) {
-			d.changeDNA(-60);
-			return new FlameBird(x, y, DrawingSurface.organismImages.get(3));
-		}
-		if (c == 4) {
-			d.changeDNA(-90);
-			return new FluffyRam(x, y, DrawingSurface.organismImages.get(4));
-		}
+	public static boolean createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
 		
-		return null;
+		Organism o = null;
+		PImage imageToUse = DrawingSurface.organismImages.get(c);
+		
+		if (c == 0)
+			o = new YellowberryTree(x, y, imageToUse);
+		else if (c == 1)
+			o = new GlowingMoss(x, y, imageToUse);
+		else if (c == 2)
+			o = new MouseHopper(x, y, imageToUse);
+		else if (c == 3)
+			o = new FlameBird(x, y, imageToUse);
+		else if (c == 4) 
+			o = new FluffyRam(x, y, imageToUse);
+		
+		if (o == null || d.thisPlayer.getBalance() < o.getCost())
+			return false;
+
+		d.thisPlayer.changeBalance(-o.getCost());
+		d.add(o);
+		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + " located at (" + getX() + ", " + getY() + ")";
+	}
+	
+	/**
+	 * gets the cost of the organism
+	 * @return the cost of the organism
+	 */
+	public int getCost() {
+		return cost;
+	}
+	
+	/**
+	 * @return DNA Value of the organism (per tick)
+	 */
+	public int getDNAValue() {
+		return value;
+	}
+	
+	/**
+	 * @return Value of the organism when eaten
+	 */
+	public int getFoodValue() {
+		return foodValue;
+	}
 }

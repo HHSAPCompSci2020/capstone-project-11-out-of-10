@@ -32,7 +32,7 @@ public class DrawingSurface extends PApplet {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 	
-	public static final int TICK_RATE = 10000; // milliseconds between ticks
+	public static final int TICK_RATE = 5000; // milliseconds between ticks
 	
 	public ArrayList<Integer> keysHeld;
 	ArrayList<GButton> buttons;
@@ -44,7 +44,6 @@ public class DrawingSurface extends PApplet {
 	public ArrayList<Sprite> obstacles;
 	public ArrayList<Organism> organisms;
 	public int totalBerries;
-	public int totalDNA;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
 	
@@ -131,9 +130,10 @@ public class DrawingSurface extends PApplet {
 		thisPlayer.update(this);
 		if (thisPlayer.hasChanged())
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
+		
 		if (this.millis() > this.lastOrganismTick + TICK_RATE) {
-			for (int i = 0; i < organisms.size(); i++)
-				organisms.get(i).act(this);
+			for (Organism o : organisms)
+				o.act(this);
 			lastOrganismTick = this.millis();
 		}
 		
@@ -172,7 +172,7 @@ public class DrawingSurface extends PApplet {
 		
 		// ALL UI ELEMENTS DRAW BELOW HERE
 		
-		String text = "Animal selected: " + animalDrawn + "     coins: " + totalDNA;
+		String text = "Animal selected: " + animalDrawn + "     coins: " + thisPlayer.getBalance();
 		fill(0);
 		text(text, 10, 20);
 	}
@@ -228,10 +228,9 @@ public class DrawingSurface extends PApplet {
 	
 	@Override
 	public void mousePressed() {
-		if (animalDrawn >= 0 && animalDrawn <= 4) {
+		if (animalDrawn >= 0) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
-			PImage imageToUse = organismImages.get(animalDrawn);
-			organisms.add(Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this));
+			Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this);
 			animalDrawn = -1;
 		}
 	}
@@ -284,7 +283,18 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void changeDNA(int changeInDNA) {
-		totalDNA += changeInDNA;
+		thisPlayer.changeBalance(changeInDNA);
+	}
+	
+	/**
+	 * @param a First Sprite
+	 * @param b Second Sprite
+	 * @return Distance between the Sprites
+	 */
+	public double distance(Sprite a, Sprite b) {
+		double dx = a.getX() - b.getX();
+		double dy = a.getY() - b.getY();
+		return Math.sqrt(dx*dx + dy*dy);
 	}
 	
 	
