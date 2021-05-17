@@ -1,5 +1,7 @@
 package organisms;
 
+import java.util.ArrayList;
+
 import game.DrawingSurface;
 import processing.core.PImage;
 
@@ -21,7 +23,13 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public boolean eat(DrawingSurface game) {
+		ArrayList<Organism> o = game.getList();
 		if(game.getTotalBerries()>1) {
+			for(Organism organism : o) {
+				if(organism instanceof YellowberryTree) {
+					target = organism;
+				}
+			}
 			game.setTotalBerries(game.getTotalBerries()-1);
 			return true;
 		}
@@ -41,8 +49,10 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public void act(DrawingSurface game) {
+		needToEat = true;
 		if(!eat(game)) {
 			System.out.println("NOFOODFORMOUSEHOPPER");
+			this.remove(game);
 		}
 		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
@@ -50,6 +60,19 @@ public class MouseHopper extends Animal {
 		}
 		game.changeDNA(2);
 		reproductionIndex++;
+	}
+	
+	public void update(DrawingSurface game) {
+		if(needToEat == true)
+			move(Math.atan2((target.getX()-getX()), (target.getY()-getY()))-Math.PI/2, 10);
+		if(target != null && Math.abs(target.getX()-getX())<10) {
+			velocityX = 0;
+			velocityY = 0;
+			needToEat = false;
+			target = null;
+		}
+		rect.x += velocityX;
+		rect.y += velocityY;
 	}
 
 }

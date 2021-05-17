@@ -30,11 +30,12 @@ public abstract class Organism extends Sprite {
 	
 	/**
 	 * moves the organism
-	 * @param dx how much in the x direction it moves by
-	 * @param dy how much in the y direction it moves by
+	 * @param angle angle that the organism moves in
+	 * @param speed how fast the organism moves
 	 */
-	public void move(double dx, double dy) {
-		translate(dx,dy);
+	public void move(double angle, double speed) {
+		velocityX = speed*Math.cos(angle);
+		velocityY = -speed*Math.sin(angle);
 	}
 	
 	/**

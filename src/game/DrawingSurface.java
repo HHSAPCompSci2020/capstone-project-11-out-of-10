@@ -143,8 +143,8 @@ public class DrawingSurface extends PApplet {
 			lastOrganismTick = this.millis();
 		}
 		
-		for (Organism o: organisms)
-			o.update(this);
+		for (int i = 0; i < organisms.size(); i++)
+			organisms.get(i).update(this);
 	}
 
 	@Override
@@ -292,6 +292,7 @@ public class DrawingSurface extends PApplet {
 	public void changeDNA(int changeInDNA) {
 		totalDNA += changeInDNA;
 	}
+	
 	
 	/**
 	 * Listens to changes in the players of a room

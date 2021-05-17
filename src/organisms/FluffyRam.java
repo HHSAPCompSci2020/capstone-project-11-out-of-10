@@ -25,7 +25,8 @@ public class FluffyRam extends Animal {
 		ArrayList<Organism> o = game.getList();
 		for(Organism organism : o) {
 			if(organism instanceof MouseHopper) {
-				game.remove(organism);
+				target = organism;
+				//game.remove(organism);
 				return true;
 			}
 		}
@@ -44,8 +45,10 @@ public class FluffyRam extends Animal {
 
 	@Override
 	public void act(DrawingSurface game) {
+		needToEat = true;
 		if(!eat(game)) {
 			System.out.println("NOFOODFORFLUFFYRAM");
+			this.remove(game);
 		}
 		if(reproductionIndex > reproductionCount/10-1) {
 			reproduce(game);
@@ -55,5 +58,17 @@ public class FluffyRam extends Animal {
 		reproductionIndex++;
 	}
 
-
+	public void update(DrawingSurface game) {
+		if(needToEat == true)
+			move(Math.atan2((target.getX()-getX()), (target.getY()-getY()))-Math.PI/2, 10);
+		if(target != null && Math.abs(target.getX()-getX())<10) {
+			velocityX = 0;
+			velocityY = 0;
+			needToEat = false;
+			target.remove(game);
+			target = null;
+		}
+		rect.x += velocityX;
+		rect.y += velocityY;
+	}
 }

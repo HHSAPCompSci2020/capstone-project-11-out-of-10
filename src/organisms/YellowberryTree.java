@@ -33,9 +33,10 @@ public class YellowberryTree extends Organism {
 			reproduce(game);
 			reproductionIndex = 0;
 		}
-		game.setTotalBerries(game.getTotalBerries()+1);
+		game.setTotalBerries(game.getTotalBerries()+10);
 		game.changeDNA(3);
 		reproductionIndex++;
+		System.out.println(game.getTotalBerries());
 	}
 
 }

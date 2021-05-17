@@ -14,6 +14,8 @@ public abstract class Animal extends Organism {
 	 * how often the animal has to eat
 	 */
 	protected int foodCount;
+	protected Organism target;
+	protected boolean needToEat;
 
 	
 	/**
@@ -29,6 +31,7 @@ public abstract class Animal extends Organism {
 	public Animal(double x, double y, double w, double h, int reproductionCount, int foodCount, PImage image) {
 		super(x, y, w, h, reproductionCount, image);
 		this.foodCount = foodCount;
+		needToEat = false;
 	}
 	
 	/**
