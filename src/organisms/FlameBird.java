@@ -16,7 +16,6 @@ public class FlameBird extends Animal{
 	public FlameBird(double x, double y, PImage image) {
 		super(x, y, 30, 50, image, 5/*reproduction*/, 60/*cost*/, 2/*value*/, 3/*foodValue*/);
 		reproductionIndex = 0;
-		needToEat = false;
 	}
 
 	@Override

@@ -28,5 +28,13 @@ public class YellowberryTree extends Organism {
 		
 		super.act(game);
 	}
+	
+	@Override
+	public int getEaten(DrawingSurface game) {
+		if (game.totalBerries > 0) {
+			game.totalBerries--;
+			return this.getFoodValue();
+		} else return 0;
+	}
 
 }

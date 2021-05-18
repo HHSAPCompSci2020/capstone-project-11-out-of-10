@@ -64,6 +64,16 @@ public class Sprite {
 	}
 	
 	/**
+	 * Changes the Sprite's velocity. 
+	 * @param speed The speed to walk at
+	 * @param angle The angle to walk at
+	 */
+	public void movePolar(double angle, double speed) {
+		velocityX = speed*Math.cos(angle);
+		velocityY = -speed*Math.sin(angle);
+	}
+	
+	/**
 	 * Should be called every frame by the game. Moves the Sprite by its velocity.
 	 * @param game The DrawingSurface that the player is located on.
 	 */

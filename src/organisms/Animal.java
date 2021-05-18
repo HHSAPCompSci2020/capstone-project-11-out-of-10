@@ -15,7 +15,6 @@ public abstract class Animal extends Organism {
 	 */
 	protected int foodCount;
 	protected Organism target;
-	protected boolean needToEat;
 
 	
 	/**
@@ -31,7 +30,6 @@ public abstract class Animal extends Organism {
 	public Animal(double x, double y, double w, double h, PImage image, int reproductionTicks, int cost, int value, int foodValue) {
 		super(x, y, w, h, image, reproductionTicks, cost, value, foodValue);
 		this.foodCount = 0;
-		needToEat = false;
 	}
 	
 	/**
@@ -44,27 +42,36 @@ public abstract class Animal extends Organism {
 	@Override
 	public void update(DrawingSurface game) {
 		if (target != null) {
-			if (needToEat)
-				move(Math.atan2(target.getX() - getX(), target.getY() - getY()) - Math.PI/2, 10);
-			
-			if(game.distance(this, target) < 10) {
+			if (game.distance(this, target) < 10) {
 				velocityX = 0;
 				velocityY = 0;
-				
+				foodCount += target.getFoodValue();
+				target.getEaten(game);
 				target = null;
-			}
+			} else
+				move(Math.atan2(target.getX() - getX(), target.getY() - getY()) - Math.PI/2, 10);
 		}
 		super.update(game);
 	}
 	
 	@Override
 	public void act(DrawingSurface game) {
-		needToEat = true;
-		if(!tryToEat(game)) {
-			System.out.println("No food for " + this);
-			this.remove(game);
+		foodCount--;
+		if (foodCount < 5) {
+			boolean success = tryToEat(game);
+			if (foodCount <= 0 && !success) {
+				System.out.println("No food for " + this);
+				this.remove(game);
+			}
+		} else {
+			wander();
 		}
+
 		super.act(game);
+	}
+	
+	public void wander() {
+		movePolar(Math.random()*2*Math.PI, 0.3);
 	}
 	
 }

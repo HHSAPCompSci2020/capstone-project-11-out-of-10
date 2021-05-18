@@ -123,6 +123,16 @@ public abstract class Organism extends Sprite {
 		return true;
 	}
 	
+	/**
+	 * Called when another organism eats this one.
+	 * @param game DrawingSurface on which this organism lives
+	 * @return Food value of the organism
+	 */
+	public int getEaten(DrawingSurface game) {
+		game.remove(this);
+		return foodValue;
+	}
+	
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + " located at (" + getX() + ", " + getY() + ")";

@@ -41,16 +41,6 @@ public class Player extends Sprite {
 		this.balance = 300;
 	}
 	
-	/**
-	 * Changes the Player's velocity. 
-	 * @param speed The speed to walk at
-	 * @param angle The angle to walk at
-	 */
-	public void walk(double angle, double speed) {
-		velocityX = speed*Math.cos(angle);
-		velocityY = -speed*Math.sin(angle);
-	}
-	
 	@Override
 	// the update method should set hasChanged every time it is called
 	public void update(DrawingSurface game) {
@@ -66,7 +56,7 @@ public class Player extends Sprite {
 			hasChanged = false;
 			
 		} else {
-			walk(angle, MOVE_SPEED);
+			movePolar(angle, MOVE_SPEED);
 			
 			/* Collision works separately on X and Y, so if a Player collides while moving diagonally,
 			 * Player can still move on one axis (as long as there isn't another obstacle blocking the other axis)
