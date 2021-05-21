@@ -35,8 +35,8 @@ public class DrawingSurface extends PApplet {
 
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	
 	public static final int TICK_RATE = 5000; // milliseconds between ticks
+	public static final String[] TYPES = {"tree", "moss", "mouse", "bird", "ram"};
 	
 	public ArrayList<Integer> keysHeld;
 	ArrayList<GButton> buttons;
@@ -87,7 +87,8 @@ public class DrawingSurface extends PApplet {
 		thisPlayerRef = room.child("players").push();
 		
 		room.child("players").addChildEventListener(new PlayerListener());
-		room.child("organisms").addChildEventListener(new OrganismListener());
+		for (int i = 0; i < TYPES.length; i++)
+			room.child("organisms").child(TYPES[i]).addChildEventListener(new OrganismListener(TYPES[i]));
 		
 		gameStarted = false;
 	}
@@ -118,7 +119,6 @@ public class DrawingSurface extends PApplet {
 		// on program exit
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				System.out.println(players);
 				thisPlayerRef.removeValueAsync();
 				if (players.size() == 0) {
 					room.removeValueAsync();
@@ -267,16 +267,10 @@ public class DrawingSurface extends PApplet {
 	 */
 	public void handleButtonEvents(GButton button, GEvent event) {
 		if (event == GEvent.CLICKED) {
-			if (button == buttons.get(0))
-				animalDrawn = "tree";
-			else if (button == buttons.get(1))
-				animalDrawn = "moss";
-			else if (button == buttons.get(2))
-				animalDrawn = "mouse";
-			else if (button == buttons.get(3))
-				animalDrawn = "bird";
-			else if (button == buttons.get(4))
-				animalDrawn = "ram";
+			for (int i = 0; i < buttons.size(); i++) {
+				if (button == buttons.get(i))
+					animalDrawn = TYPES[i];
+			}
 		}
 	}
 	
@@ -438,13 +432,14 @@ public class DrawingSurface extends PApplet {
 	public class OrganismListener implements ChildEventListener {
 		
 		private ConcurrentLinkedQueue<Runnable> tasks;
+		private String type;
 		
 		/**
 		 * Creates a new OrganismListener
 		 */
-		public OrganismListener() {
+		public OrganismListener(String type) {
 			tasks = new ConcurrentLinkedQueue<Runnable>();
-			
+			this.type = type;
 			DrawingSurface.this.registerMethod("post", this);
 		}
 		
@@ -493,7 +488,6 @@ public class DrawingSurface extends PApplet {
 		}
 		
 		public OrganismPost getPost(DataSnapshot snap) {
-			String type = snap.getRef().getParent().getKey();
 			if (type == "tree")
 				return snap.getValue(TreePost.class);
 			else if (type == "mouse" || type == "bird" || type == "ram")
