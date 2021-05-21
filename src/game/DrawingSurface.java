@@ -139,12 +139,13 @@ public class DrawingSurface extends PApplet {
 		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-
 		ArrayList<Organism> o = new ArrayList<Organism>(organisms.values());
 		ArrayList<Organism> other = new ArrayList<Organism>(otherOrganisms.values());
 		if (hasTicked) {
 			for (int i = 0; i < o.size(); i++)
 				o.get(i).act(this);
+			for (int i = 0; i < o.size(); i++)
+				o.get(i).getRef().setValueAsync(o.get(i).getDataObject()); // update organisms
 		}
 		
 		for (int i = 0; i < o.size(); i++)
@@ -285,6 +286,9 @@ public class DrawingSurface extends PApplet {
 		if (organisms.remove(o.getRef().getKey()) != null) { // is this one of my organisms?
 			o.getRef().removeValueAsync();
 			return true;
+		} else if (otherOrganisms.remove(o.getRef().getKey()) != null) { // someone else's?
+			o.getRef().removeValueAsync();
+			return true;
 		}
 		return false;
 	}
@@ -294,7 +298,18 @@ public class DrawingSurface extends PApplet {
 	 * @param o Organism to add
 	 */
 	public void add(Organism o) {
-		DatabaseReference ref = room.child("organisms").push();
+		String type = null;
+		if (o instanceof YellowberryTree)
+			type = "tree";
+		else if (o instanceof GlowingMoss)
+			type = "moss";
+		else if (o instanceof MouseHopper)
+			type = "mouse";
+		else if (o instanceof FlameBird)
+			type = "bird";
+		else if (o instanceof FluffyRam)
+			type = "ram";
+		DatabaseReference ref = room.child("organisms").child(type).push();
 		ref.setValueAsync(o.getDataObject());
 		o.setDataRef(ref);
 		organisms.put(ref.getKey(), o);
