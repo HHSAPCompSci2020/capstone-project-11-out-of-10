@@ -56,7 +56,7 @@ public abstract class Animal extends Organism {
 	@Override
 	public void act(DrawingSurface game) {
 		foodCount--;
-		if (foodCount < 5) {
+		if (foodCount < 3) {
 			tryToEat(game);
 			if (foodCount < 0) {
 				System.out.println("No food for " + this);

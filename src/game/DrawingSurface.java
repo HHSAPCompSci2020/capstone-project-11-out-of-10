@@ -139,15 +139,18 @@ public class DrawingSurface extends PApplet {
 		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
+
+		ArrayList<Organism> o = new ArrayList<Organism>(organisms.values());
+		ArrayList<Organism> other = new ArrayList<Organism>(otherOrganisms.values());
 		if (hasTicked) {
-			for (Organism o : organisms.values())
-				o.act(this);
+			for (int i = 0; i < o.size(); i++)
+				o.get(i).act(this);
 		}
 		
-		for (Organism o : organisms.values())
-			o.update(this);
-		for (Organism o : otherOrganisms.values())
-			o.update(this);
+		for (int i = 0; i < o.size(); i++)
+			o.get(i).update(this);
+		for (int i = 0; i < other.size(); i++)
+			other.get(i).update(this);
 		
 		if (hasTicked)
 			lastOrganismTick = this.millis();
