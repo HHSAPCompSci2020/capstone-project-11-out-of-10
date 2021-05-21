@@ -3,7 +3,9 @@ package organisms;
 import com.google.firebase.database.DatabaseReference;
 
 import game.DrawingSurface;
+import networking.AnimalPost;
 import networking.OrganismPost;
+import networking.TreePost;
 import processing.core.PImage;
 import sprite.Sprite;
 
@@ -103,23 +105,27 @@ public abstract class Organism extends Sprite {
 	 * @param d DrawingSurface the Organism will be in
 	 * @return
 	 */
-	public static Organism createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
+	public static Organism createOrganismFromType(String type, double x, double y, DrawingSurface d) {
 		
 		Organism o = null;
-		PImage imageToUse = DrawingSurface.organismImages.get(c);
+		PImage imageToUse = d.organismImages.get(type);
 		
-		if (c == 0)
+		if (type == "tree")
 			o = new YellowberryTree(x, y, imageToUse);
-		else if (c == 1)
+		else if (type == "moss")
 			o = new GlowingMoss(x, y, imageToUse);
-		else if (c == 2)
+		else if (type == "mouse")
 			o = new MouseHopper(x, y, imageToUse);
-		else if (c == 3)
+		else if (type == "bird")
 			o = new FlameBird(x, y, imageToUse);
-		else if (c == 4) 
+		else if (type == "ram") 
 			o = new FluffyRam(x, y, imageToUse);
 		
 		return o;
+	}
+	
+	public static Organism createOrganismFromPost(OrganismPost post) {
+		return null;
 	}
 	
 	/**
@@ -143,19 +149,19 @@ public abstract class Organism extends Sprite {
 	public OrganismPost getDataObject() {
 		int food = 0;
 		if (this instanceof Animal)
-			food = ((Animal) this).foodCount;
+			return new AnimalPost(getX(), getY(), reproductionIndex, ((Animal) this).foodCount);
+		if (this instanceof YellowberryTree)
+			return new TreePost(getX(), getY(), reproductionIndex, ((YellowberryTree) this).berryCount);
 
-		return new OrganismPost(getCodeFromOrganism(this), getX(), getY(), food, reproductionIndex);
+		return new OrganismPost(getX(), getY(), reproductionIndex);
 	}
 	
 	public void matchPost(OrganismPost o) {
-		if (getCodeFromOrganism(this) != o.getOrganismType()) { // safety measure
-			System.out.println("Organism " + this + " has a different type than post " + o);
-			return;
-		}
 		setLocation(o.getX(), o.getY());
 		if (this instanceof Animal)
-			((Animal) this).foodCount = o.getFood();
+			((Animal) this).foodCount = ((AnimalPost) o).getFood();
+		if (this instanceof YellowberryTree)
+			((YellowberryTree) this).berryCount = ((TreePost) o).getBerries();
 		this.reproductionIndex = o.getReproductionTimer();
 	}
 	

@@ -7,9 +7,7 @@ package networking;
  */
 public class OrganismPost {
 	
-	public int organismType;
 	public double x, y;
-	public int food;
 	public int reproductionTimer;
 	
 	/**
@@ -27,16 +25,10 @@ public class OrganismPost {
 	 * @param food Current amount of food. For organisms that don't need food (trees, moss) this value doesn't matter
 	 * @param reproductionTimer Current index in reproduction count.
 	 */
-	public OrganismPost(int organismType, double x, double y, int food, int reproductionTimer) {
-		this.organismType = organismType;
+	public OrganismPost(double x, double y, int reproductionTimer) {
 		this.x = x;
 		this.y = y;
-		this.food = food;
 		this.reproductionTimer = reproductionTimer;
-	}
-	
-	public int getOrganismType() {
-		return organismType;
 	}
 	
 	public double getX() {
@@ -47,15 +39,11 @@ public class OrganismPost {
 		return y;
 	}
 	
-	public int getFood() {
-		return food;
-	}
-	
 	public int getReproductionTimer() {
 		return reproductionTimer;
 	}
 	
 	public String toString() {
-		return "Type: " + organismType + ", Location: (" + x + ", " + y + "), Food: " + food;
+		return "Location: (" + x + ", " + y + ")";
 	}
 }

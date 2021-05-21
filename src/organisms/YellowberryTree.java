@@ -5,6 +5,8 @@ import processing.core.PImage;
 
 public class YellowberryTree extends Organism {
 	
+	protected int berryCount;
+	
 	/**
 	 * Constructs a YellowberryTree in the game
 	 * @param x x-coordinate of the tree
@@ -13,7 +15,8 @@ public class YellowberryTree extends Organism {
 	 */
 	public YellowberryTree(double x, double y, PImage image) {
 		super(x, y, 60, 100, image, 12/*reproduction*/, 100/*cost*/, 3/*value*/, 2/*foodValue*/);
-		reproductionIndex = 0;;
+		reproductionIndex = 0;
+		berryCount = 0;
 	}
 
 	@Override
@@ -22,17 +25,15 @@ public class YellowberryTree extends Organism {
 	}
 
 	@Override
-	public void act(DrawingSurface game) { // remember to add berries as well
-		game.setTotalBerries(game.getTotalBerries()+10);
-		System.out.println(game.getTotalBerries());
-		
+	public void act(DrawingSurface game) {
+		berryCount += 10;
 		super.act(game);
 	}
 	
 	@Override
 	public int getEaten(DrawingSurface game) {
-		if (game.totalBerries > 0) {
-			game.totalBerries--;
+		if (berryCount > 0) {
+			berryCount--;
 			return this.getFoodValue();
 		} else return 0;
 	}

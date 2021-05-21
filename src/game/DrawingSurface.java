@@ -15,8 +15,10 @@ import g4p_controls.GAlign;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GLabel;
+import networking.AnimalPost;
 import networking.OrganismPost;
 import networking.PlayerPost;
+import networking.TreePost;
 import organisms.Organism;
 import organisms.*;
 import processing.core.PApplet;
@@ -38,7 +40,7 @@ public class DrawingSurface extends PApplet {
 	
 	public ArrayList<Integer> keysHeld;
 	ArrayList<GButton> buttons;
-	public int animalDrawn;
+	public String animalDrawn;
 	public int lastOrganismTick;
 	
 	public int gameAreaWidth;
@@ -52,7 +54,7 @@ public class DrawingSurface extends PApplet {
 	
 	public static PImage playerImage;
 	public static PImage obstacleImage;
-	public static ArrayList<PImage> organismImages;
+	public static HashMap<String, PImage> organismImages;
 
 	public DatabaseReference room;
 	public DatabaseReference thisPlayerRef;
@@ -67,7 +69,7 @@ public class DrawingSurface extends PApplet {
 	 */
 	public DrawingSurface(DatabaseReference openRoom, DatabaseReference room, int playerMax) {
 		keysHeld = new ArrayList<Integer>();
-		animalDrawn = -1;
+		animalDrawn = null;
 		
 		gameAreaWidth = 5000;
 		gameAreaHeight = 3000;
@@ -77,7 +79,7 @@ public class DrawingSurface extends PApplet {
 		players = new HashMap<String, Player>();
 		organisms = new HashMap<String, Organism>();
 		otherOrganisms = new HashMap<>();
-		organismImages = new ArrayList<PImage>();
+		organismImages = new HashMap<>();
 		
 		this.openRoom = openRoom;
 		this.room = room;
@@ -94,11 +96,11 @@ public class DrawingSurface extends PApplet {
 	public void setup() {
 		playerImage = loadImage("player.png");
 		obstacleImage = loadImage("obstacle.png");
-		organismImages.add(loadImage("yellowberry_tree.png"));
-		organismImages.add(loadImage("glowing_moss.png"));
-		organismImages.add(loadImage("mouse_hopper.png"));
-		organismImages.add(loadImage("flame_bird.png"));
-		organismImages.add(loadImage("fluffy_ram.png"));
+		organismImages.put("tree", loadImage("yellowberry_tree.png"));
+		organismImages.put("moss", loadImage("glowing_moss.png"));
+		organismImages.put("mouse", loadImage("mouse_hopper.png"));
+		organismImages.put("bird", loadImage("flame_bird.png"));
+		organismImages.put("ram", loadImage("fluffy_ram.png"));
 		
 		buttons.add(new GButton(this, 40,  500, 80, 30, "Yellowberry Tree"));
 		buttons.add(new GButton(this, 190, 500, 80, 30, "Glowing Moss"));
@@ -238,16 +240,16 @@ public class DrawingSurface extends PApplet {
 	
 	@Override
 	public void mousePressed() {
-		if (animalDrawn >= 0) {
+		if (animalDrawn != null) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
 			
-			Organism o = Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this);
+			Organism o = Organism.createOrganismFromType(animalDrawn, newLocation.x, newLocation.y, this);
 			if (o != null && thisPlayer.getBalance() >= o.getCost()) {
 				thisPlayer.changeBalance(-o.getCost());
 				add(o);
 			}
 			
-			animalDrawn = -1;
+			animalDrawn = null;
 		}
 	}
 
@@ -258,11 +260,16 @@ public class DrawingSurface extends PApplet {
 	 */
 	public void handleButtonEvents(GButton button, GEvent event) {
 		if (event == GEvent.CLICKED) {
-			for (int i = 0; i < buttons.size(); i++) {
-				if (button == buttons.get(i)) {
-					animalDrawn = i;
-				}
-			}
+			if (button == buttons.get(0))
+				animalDrawn = "tree";
+			else if (button == buttons.get(1))
+				animalDrawn = "moss";
+			else if (button == buttons.get(2))
+				animalDrawn = "mouse";
+			else if (button == buttons.get(3))
+				animalDrawn = "bird";
+			else if (button == buttons.get(4))
+				animalDrawn = "ram";
 		}
 	}
 	
@@ -438,16 +445,17 @@ public class DrawingSurface extends PApplet {
 
 		@Override
 		public void onChildAdded(DataSnapshot snap, String arg1) {
-			OrganismPost post = snap.getValue(OrganismPost.class);
-			Organism o = Organism.createOrganismFromCode(post.getOrganismType(), post.getX(), post.getY(), DrawingSurface.this);
-			o.matchPost(post);
+			OrganismPost post = getPost(snap);
+			Organism o = Organism.createOrganismFromPost(post);
+			
 			o.setDataRef(snap.getRef());
 			otherOrganisms.put(snap.getKey(), o);
 		}
 
 		@Override
 		public void onChildChanged(DataSnapshot snap, String arg1) {
-			otherOrganisms.get(snap.getKey()).matchPost(snap.getValue(OrganismPost.class));
+			OrganismPost post = getPost(snap);
+			otherOrganisms.get(snap.getKey()).matchPost(post);
 			
 		}
 
@@ -461,6 +469,16 @@ public class DrawingSurface extends PApplet {
 		public void onChildRemoved(DataSnapshot snap) {
 			otherOrganisms.remove(snap.getKey());
 			
+		}
+		
+		public OrganismPost getPost(DataSnapshot snap) {
+			String type = snap.getRef().getParent().getKey();
+			if (type == "tree")
+				return snap.getValue(TreePost.class);
+			else if (type == "mouse" || type == "bird" || type == "ram")
+				return snap.getValue(AnimalPost.class);
+			else
+				return snap.getValue(OrganismPost.class);
 		}
 		
 	}
