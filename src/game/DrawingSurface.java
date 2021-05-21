@@ -177,7 +177,10 @@ public class DrawingSurface extends PApplet {
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
-		for(Organism o : organisms.values())
+		for (Organism o : organisms.values())
+			o.draw(this);
+		
+		for (Organism o : otherOrganisms.values())
 			o.draw(this);
 		
 		for (Player p : players.values())
