@@ -26,6 +26,9 @@ import processing.core.PImage;
 import sprite.Player;
 import sprite.Sprite;
 
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
+
 /**
  * Draws and handles game logic
  * @author Timothy Li

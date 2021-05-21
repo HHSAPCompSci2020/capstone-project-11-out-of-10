@@ -134,7 +134,8 @@ public abstract class Organism extends Sprite {
 	 * @return Food value of the organism
 	 */
 	public int getEaten(DrawingSurface game) {
-		game.remove(this);
+		if(game.getList().contains(this))
+			game.remove(this);
 		return foodValue;
 	}
 	
