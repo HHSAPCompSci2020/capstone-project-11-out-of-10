@@ -1,6 +1,7 @@
 package organisms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import game.DrawingSurface;
 import processing.core.PImage;
@@ -21,7 +22,7 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
-		ArrayList<Organism> o = game.getList();
+		Collection<Organism> o = game.getList();
 		if (game.getTotalBerries()>1) {
 			for (Organism organism : o) {
 				if (organism instanceof YellowberryTree) {

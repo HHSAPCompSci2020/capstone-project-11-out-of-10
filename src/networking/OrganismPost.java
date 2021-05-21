@@ -10,6 +10,7 @@ public class OrganismPost {
 	public int organismType;
 	public double x, y;
 	public int food;
+	public int reproductionTimer;
 	
 	/**
 	 * Creates a new organism representation with default values of zero
@@ -24,12 +25,14 @@ public class OrganismPost {
 	 * @param x X position
 	 * @param y Y position
 	 * @param food Current amount of food. For organisms that don't need food (trees, moss) this value doesn't matter
+	 * @param reproductionTimer Current index in reproduction count.
 	 */
-	public OrganismPost(int organismType, double x, double y, int food) {
+	public OrganismPost(int organismType, double x, double y, int food, int reproductionTimer) {
 		this.organismType = organismType;
 		this.x = x;
 		this.y = y;
 		this.food = food;
+		this.reproductionTimer = reproductionTimer;
 	}
 	
 	public int getOrganismType() {
@@ -46,6 +49,10 @@ public class OrganismPost {
 	
 	public int getFood() {
 		return food;
+	}
+	
+	public int getReproductionTimer() {
+		return reproductionTimer;
 	}
 	
 	public String toString() {

@@ -1,6 +1,7 @@
 package game;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -14,6 +15,7 @@ import g4p_controls.GAlign;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GLabel;
+import networking.OrganismPost;
 import networking.PlayerPost;
 import organisms.Organism;
 import organisms.*;
@@ -42,7 +44,8 @@ public class DrawingSurface extends PApplet {
 	public int gameAreaWidth;
 	public int gameAreaHeight;
 	public ArrayList<Sprite> obstacles;
-	public ArrayList<Organism> organisms;
+	public HashMap<String, Organism> organisms;
+	public HashMap<String, Organism> otherOrganisms;
 	public int totalBerries;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
@@ -72,7 +75,8 @@ public class DrawingSurface extends PApplet {
 		obstacles = new ArrayList<Sprite>();
 		buttons = new ArrayList<GButton>();
 		players = new HashMap<String, Player>();
-		organisms = new ArrayList<Organism>();
+		organisms = new HashMap<String, Organism>();
+		otherOrganisms = new HashMap<>();
 		organismImages = new ArrayList<PImage>();
 		
 		this.openRoom = openRoom;
@@ -127,19 +131,24 @@ public class DrawingSurface extends PApplet {
 	 * Updates all players and organisms. Called every frame.
 	 */
 	public void update() {
+		boolean hasTicked = this.millis() > this.lastOrganismTick + TICK_RATE;
+		
 		thisPlayer.update(this);
-		if (thisPlayer.hasChanged())
+		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		if (this.millis() > this.lastOrganismTick + TICK_RATE) {
-			for (int i = 0; i < organisms.size(); i++) {
-				organisms.get(i).act(this);
-			}
-			lastOrganismTick = this.millis();
+		if (hasTicked) {
+			for (Organism o : organisms.values())
+				o.act(this);
 		}
 		
-		for (int i = 0; i < organisms.size(); i++)
-			organisms.get(i).update(this);
+		for (Organism o : organisms.values())
+			o.update(this);
+		for (Organism o : otherOrganisms.values())
+			o.update(this);
+		
+		if (hasTicked)
+			lastOrganismTick = this.millis();
 	}
 
 	@Override
@@ -162,7 +171,7 @@ public class DrawingSurface extends PApplet {
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
-		for(Organism o : organisms)
+		for(Organism o : organisms.values())
 			o.draw(this);
 		
 		for (Player p : players.values())
@@ -231,7 +240,13 @@ public class DrawingSurface extends PApplet {
 	public void mousePressed() {
 		if (animalDrawn >= 0) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
-			Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this);
+			
+			Organism o = Organism.createOrganismFromCode(animalDrawn, newLocation.x, newLocation.y, this);
+			if (o != null && thisPlayer.getBalance() >= o.getCost()) {
+				thisPlayer.changeBalance(-o.getCost());
+				add(o);
+			}
+			
 			animalDrawn = -1;
 		}
 	}
@@ -257,7 +272,11 @@ public class DrawingSurface extends PApplet {
 	 * @return Whether the removal was successful (true if the organism was present, false otherwise)
 	 */
 	public boolean remove(Organism o) {
-		return organisms.remove(o);
+		if (organisms.remove(o.getRef().getKey()) != null) { // is this one of my organisms?
+			o.getRef().removeValueAsync();
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -265,14 +284,17 @@ public class DrawingSurface extends PApplet {
 	 * @param o Organism to add
 	 */
 	public void add(Organism o) {
-		organisms.add(o);
+		DatabaseReference ref = room.child("organisms").push();
+		ref.setValueAsync(o.getDataObject());
+		o.setDataRef(ref);
+		organisms.put(ref.getKey(), o);
 	}
 	
 	/**
 	 * @return The list of all organisms in the game
 	 */
-	public ArrayList<Organism> getList() {
-		return organisms;
+	public Collection<Organism> getList() {
+		return organisms.values();
 	}
 	
 	public int getTotalBerries() {
@@ -415,14 +437,17 @@ public class DrawingSurface extends PApplet {
 		}
 
 		@Override
-		public void onChildAdded(DataSnapshot arg0, String arg1) {
-			// TODO Auto-generated method stub
-			
+		public void onChildAdded(DataSnapshot snap, String arg1) {
+			OrganismPost post = snap.getValue(OrganismPost.class);
+			Organism o = Organism.createOrganismFromCode(post.getOrganismType(), post.getX(), post.getY(), DrawingSurface.this);
+			o.matchPost(post);
+			o.setDataRef(snap.getRef());
+			otherOrganisms.put(snap.getKey(), o);
 		}
 
 		@Override
-		public void onChildChanged(DataSnapshot arg0, String arg1) {
-			// TODO Auto-generated method stub
+		public void onChildChanged(DataSnapshot snap, String arg1) {
+			otherOrganisms.get(snap.getKey()).matchPost(snap.getValue(OrganismPost.class));
 			
 		}
 
@@ -433,8 +458,8 @@ public class DrawingSurface extends PApplet {
 		}
 
 		@Override
-		public void onChildRemoved(DataSnapshot arg0) {
-			// TODO Auto-generated method stub
+		public void onChildRemoved(DataSnapshot snap) {
+			otherOrganisms.remove(snap.getKey());
 			
 		}
 		

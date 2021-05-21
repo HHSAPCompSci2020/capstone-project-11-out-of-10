@@ -1,6 +1,9 @@
 package organisms;
 
+import com.google.firebase.database.DatabaseReference;
+
 import game.DrawingSurface;
+import networking.OrganismPost;
 import processing.core.PImage;
 import sprite.Sprite;
 
@@ -16,6 +19,7 @@ public abstract class Organism extends Sprite {
 	protected int cost;
 	protected int value;
 	protected int foodValue;
+	protected DatabaseReference selfRef;
 	
 	/**
 	 * Constructs the organism in the game
@@ -99,7 +103,7 @@ public abstract class Organism extends Sprite {
 	 * @param d DrawingSurface the Organism will be in
 	 * @return
 	 */
-	public static boolean createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
+	public static Organism createOrganismFromCode(int c, double x, double y, DrawingSurface d) {
 		
 		Organism o = null;
 		PImage imageToUse = DrawingSurface.organismImages.get(c);
@@ -115,12 +119,7 @@ public abstract class Organism extends Sprite {
 		else if (c == 4) 
 			o = new FluffyRam(x, y, imageToUse);
 		
-		if (o == null || d.thisPlayer.getBalance() < o.getCost())
-			return false;
-
-		d.thisPlayer.changeBalance(-o.getCost());
-		d.add(o);
-		return true;
+		return o;
 	}
 	
 	/**
@@ -131,6 +130,33 @@ public abstract class Organism extends Sprite {
 	public int getEaten(DrawingSurface game) {
 		game.remove(this);
 		return foodValue;
+	}
+	
+	public void setDataRef(DatabaseReference ref) {
+		this.selfRef = ref;
+	}
+	
+	public DatabaseReference getRef() {
+		return this.selfRef;
+	}
+	
+	public OrganismPost getDataObject() {
+		int food = 0;
+		if (this instanceof Animal)
+			food = ((Animal) this).foodCount;
+
+		return new OrganismPost(getCodeFromOrganism(this), getX(), getY(), food, reproductionIndex);
+	}
+	
+	public void matchPost(OrganismPost o) {
+		if (getCodeFromOrganism(this) != o.getOrganismType()) { // safety measure
+			System.out.println("Organism " + this + " has a different type than post " + o);
+			return;
+		}
+		setLocation(o.getX(), o.getY());
+		if (this instanceof Animal)
+			((Animal) this).foodCount = o.getFood();
+		this.reproductionIndex = o.getReproductionTimer();
 	}
 	
 	@Override
