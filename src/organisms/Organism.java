@@ -71,8 +71,8 @@ public abstract class Organism extends Sprite {
 	protected void findReproduceLocation(DrawingSurface game, Organism baby) {
 		do {
 			double angle = Math.random() * 2 * Math.PI;
-			double x = reproductionDistance*Math.cos(angle);
-			double y = reproductionDistance*Math.sin(angle);
+			double x = reproductionDistance*Math.cos(angle) + getX();
+			double y = reproductionDistance*Math.sin(angle) + getY();
 			baby.setLocation(x, y);
 		} while (game.hitObstacle(baby));	
 	}

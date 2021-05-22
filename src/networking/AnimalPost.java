@@ -4,6 +4,10 @@ public class AnimalPost extends OrganismPost {
 	
 	private int food;
 	
+	public AnimalPost() {
+		
+	}
+	
 	public AnimalPost(double x, double y, int reproductionTimer, int food) {
 		super(x, y, reproductionTimer);
 		this.food = food;
