@@ -1,4 +1,5 @@
 package game;
+
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -372,7 +373,13 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		s.makeReproduceSound();
 	}
 
-	
+	public boolean hitObstacle(Sprite s) {
+		for (Sprite o : obstacles) {
+			if (o.spriteCollide(s))
+				return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Listens to changes in the players of a room

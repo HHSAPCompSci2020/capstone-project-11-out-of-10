@@ -36,6 +36,8 @@ public class FluffyRam extends Animal {
 	@Override
 	public void reproduce(DrawingSurface game) {
 		game.makeReproduceSound();
-		game.add(new FluffyRam(getX()+10,getY(),image));
+		Organism baby = new FluffyRam (getX(), getY(), image);
+		findReproduceLocation(game, baby);
+		game.add(baby);
 	}
 }

@@ -24,6 +24,8 @@ public abstract class Organism extends Sprite {
 	protected int foodValue;
 	protected DatabaseReference selfRef;
 	
+	private int reproductionDistance;
+	
 	/**
 	 * Constructs the organism in the game
 	 * @param x x-coordinate of the organism
@@ -39,6 +41,7 @@ public abstract class Organism extends Sprite {
 		this.cost = cost;
 		this.value = value;
 		this.foodValue = foodValue;
+		this.reproductionDistance = (int) Math.max(w, h) + 5;
 	}
 	
 	/**
@@ -64,6 +67,15 @@ public abstract class Organism extends Sprite {
 	 * @param game DrawingSurface the organism is in
 	 */
 	public abstract void reproduce(DrawingSurface game);
+	
+	protected void findReproduceLocation(DrawingSurface game, Organism baby) {
+		do {
+			double angle = Math.random() * 2 * Math.PI;
+			double x = reproductionDistance*Math.cos(angle);
+			double y = reproductionDistance*Math.sin(angle);
+			baby.setLocation(x, y);
+		} while (game.hitObstacle(baby));	
+	}
 	
 	/**
 	 * Something that is called every 10 seconds, what the organism does
