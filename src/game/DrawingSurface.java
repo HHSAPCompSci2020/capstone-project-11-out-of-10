@@ -256,6 +256,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			if (o != null && thisPlayer.getBalance() >= o.getCost()) {
 				thisPlayer.changeBalance(-o.getCost());
 				add(o);
+				makeAnimalPlaceSound();
 			}
 			
 			animalDrawn = null;
@@ -345,7 +346,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		s.makeEatSound();
 	}
 
-	public void makeReproduceSound() {
+	public void makeAnimalPlaceSound() {
 		s.makeReproduceSound();
 	}
 

@@ -36,7 +36,6 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.makeReproduceSound();
 		Organism baby = new MouseHopper(getX(), getY(), image);
 		findReproduceLocation(game, baby);
 		game.add(baby);

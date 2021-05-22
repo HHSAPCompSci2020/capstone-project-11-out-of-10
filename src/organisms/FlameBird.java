@@ -38,7 +38,6 @@ public class FlameBird extends Animal{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.makeReproduceSound();
 		Organism baby = new FlameBird(getX(), getY(), image);
 		findReproduceLocation(game, baby);
 		game.add(baby);
