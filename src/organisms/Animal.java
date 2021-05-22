@@ -30,6 +30,7 @@ public abstract class Animal extends Organism {
 	public Animal(double x, double y, double w, double h, PImage image, int reproductionTicks, int cost, int value, int foodValue) {
 		super(x, y, w, h, image, reproductionTicks, cost, value, foodValue);
 		this.foodCount = 2;
+		wander();
 	}
 	
 	/**
@@ -58,13 +59,15 @@ public abstract class Animal extends Organism {
 	public void act(DrawingSurface game) {
 		foodCount--;
 		if (foodCount < 3) {
-			tryToEat(game);
+			if (!tryToEat(game))
+				wander(); // when it fails eating wander randomly
+			
 			if (foodCount < 0) {
 				System.out.println("No food for " + this);
 				this.remove(game);
 			}
 		} else {
-			wander();
+			wander(); // when it has enough food wander randomly
 		}
 
 		super.act(game);
