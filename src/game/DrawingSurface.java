@@ -7,13 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,7 +52,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	public int gameAreaHeight;
 	public ArrayList<Sprite> obstacles;
 	public HashMap<String, Organism> organisms;
-	public HashMap<String, Organism> otherOrganisms;
+	public HashMap<String, Organism> allOrganisms;
 	public int totalBerries;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
@@ -83,15 +76,16 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	public DrawingSurface(DatabaseReference openRoom, DatabaseReference room, int playerMax) {
 		keysHeld = new ArrayList<Integer>();
 		animalDrawn = null;
+		String[] soundEffects = new String[]{"title1.mp3","title2.mp3","title3.mp3","title4.mp3","title5.mp3"};
 		
 		gameAreaWidth = 5000;
 		gameAreaHeight = 3000;
 		
-		obstacles = new ArrayList<Sprite>();
-		buttons = new ArrayList<GButton>();
-		players = new HashMap<String, Player>();
-		organisms = new HashMap<String, Organism>();
-		otherOrganisms = new HashMap<>();
+		obstacles = new ArrayList<>();
+		buttons = new ArrayList<>();
+		players = new HashMap<>();
+		organisms = new HashMap<>();
+		allOrganisms = new HashMap<>();
 		organismImages = new HashMap<>();
 		
 		this.openRoom = openRoom;
@@ -104,16 +98,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			room.child("organisms").child(TYPES[i]).addChildEventListener(new OrganismListener(TYPES[i]));
 		
 		gameStarted = false;
-		
-		
-		
-		
-		
-		String[] soundEffects = new String[]{"title1.mp3","title2.mp3","title3.mp3","title4.mp3","title5.mp3"};
-		
-
-
-		
 	}
 	
 	@Override
@@ -162,19 +146,17 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		ArrayList<Organism> o = new ArrayList<Organism>(organisms.values());
-		ArrayList<Organism> other = new ArrayList<Organism>(otherOrganisms.values());
+		ArrayList<Organism> orgs = new ArrayList<Organism>(organisms.values());
 		if (hasTicked) {
-			for (int i = 0; i < o.size(); i++)
-				o.get(i).act(this);
-			for (int i = 0; i < o.size(); i++)
-				o.get(i).getRef().setValueAsync(o.get(i).getDataObject()); // update organisms
+			for (int i = 0; i < orgs.size(); i++)
+				orgs.get(i).act(this);
+			for (int i = 0; i < orgs.size(); i++)
+				orgs.get(i).getRef().setValueAsync(orgs.get(i).getDataObject()); // update organisms
 		}
 		
-		for (int i = 0; i < o.size(); i++)
-			o.get(i).update(this);
-		for (int i = 0; i < other.size(); i++)
-			other.get(i).update(this);
+		for (Organism o : allOrganisms.values()) {
+			o.update(this);
+		}
 		
 		if (hasTicked)
 			lastOrganismTick = this.millis();
@@ -200,10 +182,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
-		for (Organism o : organisms.values())
-			o.draw(this);
-		
-		for (Organism o : otherOrganisms.values())
+		for (Organism o : allOrganisms.values())
 			o.draw(this);
 		
 		for (Player p : players.values())
@@ -303,14 +282,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * @return Whether the removal was successful (true if the organism was present, false otherwise)
 	 */
 	public boolean remove(Organism o) {
-		if (organisms.remove(o.getRef().getKey()) != null) { // is this one of my organisms?
-			o.getRef().removeValueAsync();
-			return true;
-		} else if (otherOrganisms.remove(o.getRef().getKey()) != null) { // someone else's?
-			o.getRef().removeValueAsync();
-			return true;
-		}
-		return false;
+		boolean success = allOrganisms.remove(o.getRef().getKey()) != null;
+		organisms.remove(o.getRef().getKey()); // is this one of my organisms?
+		o.getRef().removeValueAsync();
+		return success;
 	}
 	
 	/**
@@ -333,13 +308,14 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		ref.setValueAsync(o.getDataObject());
 		o.setDataRef(ref);
 		organisms.put(ref.getKey(), o);
+		allOrganisms.put(ref.getKey(), o);
 	}
 	
 	/**
 	 * @return The list of all organisms in the game
 	 */
-	public Collection<Organism> getList() {
-		return organisms.values();
+	public Collection<Organism> getOrganismList() {
+		return allOrganisms.values();
 	}
 	
 	public int getTotalBerries() {
@@ -503,13 +479,13 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			Organism o = Organism.createOrganismFromPost(post);
 			
 			o.setDataRef(snap.getRef());
-			otherOrganisms.put(snap.getKey(), o);
+			allOrganisms.put(snap.getKey(), o);
 		}
 
 		@Override
 		public void onChildChanged(DataSnapshot snap, String arg1) {
 			OrganismPost post = getPost(snap);
-			otherOrganisms.get(snap.getKey()).matchPost(post);
+			allOrganisms.get(snap.getKey()).matchPost(post);
 			
 		}
 
@@ -521,8 +497,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 
 		@Override
 		public void onChildRemoved(DataSnapshot snap) {
-			otherOrganisms.remove(snap.getKey());
-			
+			allOrganisms.remove(snap.getKey());
 		}
 		
 		public OrganismPost getPost(DataSnapshot snap) {

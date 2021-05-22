@@ -22,11 +22,10 @@ public class FluffyRam extends Animal {
 
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
-		Collection<Organism> o = game.getList();
+		Collection<Organism> o = game.getOrganismList();
 		for(Organism organism : o) {
 			if(organism instanceof MouseHopper) {
 				target = organism;
-				//game.remove(organism);
 				return true;
 			}
 		}

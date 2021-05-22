@@ -22,7 +22,7 @@ public class MouseHopper extends Animal {
 
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
-		Collection<Organism> o = game.getList();
+		Collection<Organism> o = game.getOrganismList();
 		if (game.getTotalBerries()>1) {
 			for (Organism organism : o) {
 				if (organism instanceof YellowberryTree) {

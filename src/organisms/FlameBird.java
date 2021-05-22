@@ -20,23 +20,19 @@ public class FlameBird extends Animal{
 
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
-		Collection<Organism> o = game.getList();
-		//if(game.getTotalBerries() >= 2) {
+		Collection<Organism> o = game.getOrganismList();
 			for(Organism organism : o) {
 				if(organism instanceof YellowberryTree && ((YellowberryTree)organism).getBerryCount()>0) {
 					target = organism;
 					return true;
 				}
 			}
-		//}
-		//else {
 			for(Organism organism : o) {
 				if(organism instanceof GlowingMoss) {
 					target = organism;
 					return true;
 				}
 			}
-		//}
 		return false;
 	}
 
