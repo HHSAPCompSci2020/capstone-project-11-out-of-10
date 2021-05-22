@@ -476,18 +476,28 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 
 		@Override
 		public void onChildAdded(DataSnapshot snap, String arg1) {
-			OrganismPost post = getPost(snap);
-			Organism o = Organism.createOrganismFromPost(post);
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println(snap);
+					OrganismPost post = getPost(snap);
+					Organism o = Organism.createOrganismFromPost(post);
+					o.setDataRef(snap.getRef());
+					allOrganisms.put(snap.getKey(), o);
+				}
+			});
 			
-			o.setDataRef(snap.getRef());
-			allOrganisms.put(snap.getKey(), o);
 		}
 
 		@Override
 		public void onChildChanged(DataSnapshot snap, String arg1) {
-			OrganismPost post = getPost(snap);
-			allOrganisms.get(snap.getKey()).matchPost(post);
-			
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					OrganismPost post = getPost(snap);
+					allOrganisms.get(snap.getKey()).matchPost(post);
+				}
+			});
 		}
 
 		@Override
@@ -498,7 +508,12 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 
 		@Override
 		public void onChildRemoved(DataSnapshot snap) {
-			allOrganisms.remove(snap.getKey());
+			tasks.add(new Runnable() {
+				@Override
+				public void run() {
+					allOrganisms.remove(snap.getKey());
+				}
+			});
 		}
 		
 		public OrganismPost getPost(DataSnapshot snap) {
