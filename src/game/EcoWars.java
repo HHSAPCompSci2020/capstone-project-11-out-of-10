@@ -17,6 +17,7 @@ import processing.core.PApplet;
 public class EcoWars {
 
 	public static void main(String[] args) {
+		Sound s = new Sound();
 		
 		DatabaseReference database = null;
 		

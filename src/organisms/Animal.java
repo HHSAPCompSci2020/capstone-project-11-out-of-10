@@ -46,6 +46,7 @@ public abstract class Animal extends Organism {
 				velocityX = 0;
 				velocityY = 0;
 				foodCount += target.getEaten(game);
+				game.makeEatSound();
 				target = null;
 			} else
 				move(Math.atan2(target.getX() - getX(), target.getY() - getY()) - Math.PI/2, 10);

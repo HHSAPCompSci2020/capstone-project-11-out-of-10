@@ -21,21 +21,27 @@ public class YellowberryTree extends Organism {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
+		game.makeReproduceSound();
 		game.add(new YellowberryTree(getX()+10,getY(),image));
 	}
 
 	@Override
 	public void act(DrawingSurface game) {
 		berryCount += 10;
+		System.out.println(berryCount);
 		super.act(game);
 	}
 	
 	@Override
 	public int getEaten(DrawingSurface game) {
 		if (berryCount > 0) {
-			berryCount--;
+			berryCount-=2;
 			return this.getFoodValue();
 		} else return 0;
+	}
+	
+	public int getBerryCount() {
+		return berryCount;
 	}
 
 }

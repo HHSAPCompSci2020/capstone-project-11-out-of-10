@@ -17,6 +17,7 @@ public class GlowingMoss extends Organism{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
+		game.makeReproduceSound();
 		game.add(new GlowingMoss(getX()+10,getY(),image));
 		
 	}

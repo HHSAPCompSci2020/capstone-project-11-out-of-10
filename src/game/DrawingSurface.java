@@ -1,9 +1,17 @@
 package game;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +42,7 @@ import jay.jaysound.JayLayerListener;
  * @author Timothy Li
  *
  */
-public class DrawingSurface extends PApplet {
+public class DrawingSurface extends PApplet implements JayLayerListener {
 
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
@@ -54,6 +62,7 @@ public class DrawingSurface extends PApplet {
 	public int totalBerries;
 	public HashMap<String, Player> players;
 	public Player thisPlayer;
+	Sound s = new Sound();
 	
 	public static PImage playerImage;
 	public static PImage obstacleImage;
@@ -94,6 +103,16 @@ public class DrawingSurface extends PApplet {
 			room.child("organisms").child(TYPES[i]).addChildEventListener(new OrganismListener(TYPES[i]));
 		
 		gameStarted = false;
+		
+		
+		
+		
+		
+		String[] soundEffects = new String[]{"title1.mp3","title2.mp3","title3.mp3","title4.mp3","title5.mp3"};
+		
+
+
+		
 	}
 	
 	@Override
@@ -345,6 +364,15 @@ public class DrawingSurface extends PApplet {
 		return Math.sqrt(dx*dx + dy*dy);
 	}
 	
+	public void makeEatSound() {
+		s.makeEatSound();
+	}
+
+	public void makeReproduceSound() {
+		s.makeReproduceSound();
+	}
+
+	
 	
 	/**
 	 * Listens to changes in the players of a room
@@ -498,6 +526,30 @@ public class DrawingSurface extends PApplet {
 			else
 				return snap.getValue(OrganismPost.class);
 		}
+		
+	}
+
+	@Override
+	public void musicStarted() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void musicStopped() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playlistEnded() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void songEnded() {
+		// TODO Auto-generated method stub
 		
 	}
 }

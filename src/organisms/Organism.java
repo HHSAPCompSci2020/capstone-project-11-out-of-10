@@ -3,6 +3,7 @@ package organisms;
 import com.google.firebase.database.DatabaseReference;
 
 import game.DrawingSurface;
+import game.Sound;
 import networking.AnimalPost;
 import networking.OrganismPost;
 import networking.TreePost;

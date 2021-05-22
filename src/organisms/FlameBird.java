@@ -21,29 +21,28 @@ public class FlameBird extends Animal{
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
 		Collection<Organism> o = game.getList();
-		if(game.getTotalBerries() >= 2) {
+		//if(game.getTotalBerries() >= 2) {
 			for(Organism organism : o) {
-				if(organism instanceof YellowberryTree) {
+				if(organism instanceof YellowberryTree && ((YellowberryTree)organism).getBerryCount()>0) {
 					target = organism;
-					break;
+					return true;
 				}
 			}
-			game.setTotalBerries(game.getTotalBerries()-2);
-			return true;
-		}
-		else {
+		//}
+		//else {
 			for(Organism organism : o) {
 				if(organism instanceof GlowingMoss) {
 					target = organism;
 					return true;
 				}
 			}
-		}
+		//}
 		return false;
 	}
 
 	@Override
 	public void reproduce(DrawingSurface game) {
+		game.makeReproduceSound();
 		game.add(new FlameBird(getX()+10,getY(),image));
 	}
 }
