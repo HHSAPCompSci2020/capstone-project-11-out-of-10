@@ -21,7 +21,6 @@ public class YellowberryTree extends Organism {
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		game.makeReproduceSound();
 		Organism baby = new YellowberryTree(getX(), getY(), image);
 		findReproduceLocation(game, baby);
 		game.add(baby);
