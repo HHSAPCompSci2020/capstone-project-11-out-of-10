@@ -137,8 +137,10 @@ public abstract class Organism extends Sprite {
 		return o;
 	}
 	
-	public static Organism createOrganismFromPost(OrganismPost post) {
-		return null;
+	public static Organism createOrganismFromPost(String type, OrganismPost post, DrawingSurface d) {
+		Organism o = createOrganismFromType(type, post.getX(), post.getY(), d);
+		o.matchPost(post);
+		return o;
 	}
 	
 	/**

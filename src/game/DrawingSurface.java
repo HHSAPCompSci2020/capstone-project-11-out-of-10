@@ -481,7 +481,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 				public void run() {
 					System.out.println(snap);
 					OrganismPost post = getPost(snap);
-					Organism o = Organism.createOrganismFromPost(post);
+					Organism o = Organism.createOrganismFromPost(type, post, DrawingSurface.this);
 					o.setDataRef(snap.getRef());
 					allOrganisms.put(snap.getKey(), o);
 				}
