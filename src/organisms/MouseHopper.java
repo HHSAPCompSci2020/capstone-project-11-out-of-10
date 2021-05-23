@@ -20,7 +20,7 @@ public class MouseHopper extends Animal {
 	 * @param image image of the animal
 	 */
 	public MouseHopper(double x, double y, PImage image) {
-		super(x, y, 40, 20, image, 3/*reproduction*/, 50/*cost*/, 2/*value*/, 3/*foodValue*/);
+		super(x, y, 40, 20, image, 3/*reproduction*/, 50/*cost*/, 2/*value*/, 4/*foodValue*/);
 		reproductionIndex = 0;
 	}
 
@@ -28,13 +28,11 @@ public class MouseHopper extends Animal {
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
 		Collection<Organism> o = game.getOrganismList();
-		if (game.getTotalBerries()>1) {
-			for (Organism organism : o) {
-				if (organism instanceof YellowberryTree) {
-					target = organism;
-				}
+		for (Organism organism : o) {
+			if (organism instanceof YellowberryTree) {
+				target = organism;
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

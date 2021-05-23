@@ -19,7 +19,7 @@ public class FlameBird extends Animal{
 	 * @param image image of the animal
 	 */
 	public FlameBird(double x, double y, PImage image) {
-		super(x, y, 30, 50, image, 5/*reproduction*/, 60/*cost*/, 2/*value*/, 3/*foodValue*/);
+		super(x, y, 30, 50, image, 5/*reproduction*/, 60/*cost*/, 2/*value*/, 5/*foodValue*/);
 		reproductionIndex = 0;
 	}
 

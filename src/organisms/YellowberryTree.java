@@ -22,7 +22,7 @@ public class YellowberryTree extends Organism {
 	 * @param image
 	 */
 	public YellowberryTree(double x, double y, PImage image) {
-		super(x, y, 60, 100, image, 12/*reproduction*/, 100/*cost*/, 3/*value*/, 2/*foodValue*/);
+		super(x, y, 60, 100, image, 12/*reproduction*/, 100/*cost*/, 3/*value*/, 3/*foodValue*/);
 		reproductionIndex = 0;
 		berryCount = 0;
 	}
@@ -36,15 +36,14 @@ public class YellowberryTree extends Organism {
 
 	@Override
 	public void act(DrawingSurface game) {
-		berryCount += 10;
-		System.out.println(berryCount);
+		berryCount += 2;
 		super.act(game);
 	}
 	
 	@Override
 	public int getEaten(DrawingSurface game) {
 		if (berryCount > 0) {
-			berryCount-=2;
+			berryCount -= 1;
 			return this.getFoodValue();
 		} else return 0;
 	}

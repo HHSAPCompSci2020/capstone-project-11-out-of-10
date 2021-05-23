@@ -16,7 +16,7 @@ public class GlowingMoss extends Organism{
 	 * @param image image of the animal
 	 */
 	public GlowingMoss(double x, double y, PImage image) {
-		super(x, y, 40, 40, image, 2/*reproduction*/, 30/*cost*/, 1/*value*/, 1/*foodValue*/);
+		super(x, y, 40, 40, image, 2/*reproduction*/, 30/*cost*/, 1/*value*/, 3/*foodValue*/);
 		reproductionIndex = 0;
 	}
 

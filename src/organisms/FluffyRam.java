@@ -21,7 +21,7 @@ public class FluffyRam extends Animal {
 	 * @param image image of the animal
 	 */
 	public FluffyRam(double x, double y, PImage image) {
-		super(x, y, 60, 40, image, 6/*reproduction*/, 90/*cost*/, 3/*value*/, 5/*foodValue*/);
+		super(x, y, 60, 40, image, 6/*reproduction*/, 90/*cost*/, 3/*value*/, 7/*foodValue*/);
 		reproductionIndex=0;
 	}
 
@@ -29,8 +29,8 @@ public class FluffyRam extends Animal {
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
 		Collection<Organism> o = game.getOrganismList();
-		for(Organism organism : o) {
-			if(organism instanceof MouseHopper) {
+		for (Organism organism : o) {
+			if (organism instanceof MouseHopper) {
 				target = organism;
 				return true;
 			}
