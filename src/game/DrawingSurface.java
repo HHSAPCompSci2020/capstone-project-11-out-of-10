@@ -479,7 +479,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
-					System.out.println(snap);
+					
+					if (organisms.containsKey(snap.getKey()))
+						return;
+					
 					OrganismPost post = getPost(snap);
 					Organism o = Organism.createOrganismFromPost(type, post, DrawingSurface.this);
 					o.setDataRef(snap.getRef());
@@ -494,6 +497,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
+					
+					if (organisms.containsKey(snap.getKey()))
+						return;
+					
 					OrganismPost post = getPost(snap);
 					allOrganisms.get(snap.getKey()).matchPost(post);
 				}
@@ -511,6 +518,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
+					
+					if (organisms.containsKey(snap.getKey()))
+						return;
+					
 					allOrganisms.remove(snap.getKey());
 				}
 			});
