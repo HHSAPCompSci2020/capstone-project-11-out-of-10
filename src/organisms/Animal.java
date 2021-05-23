@@ -5,7 +5,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 /**
- * 
+ * Represents an animal in the game
  * @author Timothy Li
  *
  */

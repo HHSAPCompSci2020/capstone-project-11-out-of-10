@@ -3,6 +3,11 @@ package organisms;
 import game.DrawingSurface;
 import processing.core.PImage;
 
+/**
+ * Represents a Glowing Moss organism in the game
+ * @author timothyli
+ *
+ */
 public class GlowingMoss extends Organism{
 	/**
 	 * Constructs a GlowingMoss in the game

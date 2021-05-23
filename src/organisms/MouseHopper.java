@@ -6,6 +6,11 @@ import java.util.Collection;
 import game.DrawingSurface;
 import processing.core.PImage;
 
+/**
+ * Represents a Mouse Hopper in the game
+ * @author Timothy Li
+ *
+ */
 public class MouseHopper extends Animal {
 	
 	/**

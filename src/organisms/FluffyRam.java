@@ -6,6 +6,12 @@ import java.util.Collection;
 import game.DrawingSurface;
 import processing.core.PImage;
 
+
+/**
+ * Represents a Fluffy Ram in the game
+ * @author Timothy Li
+ *
+ */
 public class FluffyRam extends Animal {
 
 	/**

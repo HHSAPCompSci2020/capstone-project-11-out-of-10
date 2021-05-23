@@ -5,6 +5,11 @@ import java.util.Collection;
 import game.DrawingSurface;
 import processing.core.PImage;
 
+/**
+ * Represents a Flame Bird animal in the game.
+ * @author Timothy Li
+ *
+ */
 public class FlameBird extends Animal{
 	
 	/**

@@ -11,7 +11,7 @@ import processing.core.PImage;
 import sprite.Sprite;
 
 /**
- * 
+ * Represents an organism in the game
  * @author Timothy Li
  *
  */

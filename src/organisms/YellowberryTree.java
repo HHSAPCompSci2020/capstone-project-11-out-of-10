@@ -3,8 +3,16 @@ package organisms;
 import game.DrawingSurface;
 import processing.core.PImage;
 
+/**
+ * Represents an Yellowberry Tree in the game
+ * @author Timothy Li
+ *
+ */
 public class YellowberryTree extends Organism {
 	
+	/**
+	 * the number of berries a yellowberry tree has
+	 */
 	protected int berryCount;
 	
 	/**

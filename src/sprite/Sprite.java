@@ -14,10 +14,25 @@ import processing.core.PImage;
 public class Sprite {
 
 	public static boolean debug = false;
-	
+	/**
+	 * image of sprite
+	 */
 	protected PImage image;
+	
+	/**
+	 * bounding rectangle of sprite
+	 */
 	protected Rectangle2D.Double rect;
-	protected double velocityX, velocityY;
+	
+	/**
+	 * velocity in x-direction or sprite
+	 */
+	protected double velocityX;
+	
+	/**
+	 * velocity in y-direction or sprite
+	 */
+	protected double velocityY;
 	
 	/**
 	 * Creates a new sprite, with dimensions, starting location, and graphics.
@@ -98,18 +113,34 @@ public class Sprite {
 		drawing.popStyle();
 	}
 	
+	/**
+	 * gets x-coordinate of the sprite
+	 * @return x-coordinate of sprite
+	 */
 	public double getX() {
 		return rect.x;
 	}
 	
+	/**
+	 * gets y-coordinate of sprite
+	 * @return y-coordinate of sprite
+	 */
 	public double getY() {
 		return rect.y;
 	}
 	
+	/**
+	 * gets width of the sprite
+	 * @return width of the sprite
+	 */
 	public double getWidth() {
 		return rect.width;
 	}
 	
+	/**
+	 * gets height (or length) of the sprite
+	 * @return height of the sprite
+	 */
 	public double getHeight() {
 		return rect.height;
 	}

@@ -42,7 +42,6 @@ public class Player extends Sprite {
 	}
 	
 	@Override
-	// the update method should set hasChanged every time it is called
 	public void update(DrawingSurface game) {
 		
 		int x = game.getXAxisInput();
@@ -81,14 +80,26 @@ public class Player extends Sprite {
 		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
 	}
 	
+	/**
+	 * Changes current the balance of the player
+	 * @param change amount the balance changes by
+	 */
 	public void changeBalance(int change) {
 		balance += change;
 	}
 	
+	/**
+	 * gets the balance of the player
+	 * @return the current balance
+	 */
 	public double getBalance() {
 		return balance;
 	}
 	
+	/**
+	 * gets whether or not the player has moved
+	 * @return true if the player has changed, false if the player has not
+	 */
 	public boolean hasChanged() {
 		return hasChanged;
 	}
