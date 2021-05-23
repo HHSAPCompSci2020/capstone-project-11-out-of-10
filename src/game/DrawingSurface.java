@@ -33,41 +33,65 @@ import jay.jaysound.JayLayerListener;
 
 /**
  * Draws and handles game logic
- * @author Timothy Li
+ * @author Timothy Li and Nir Reiter
  *
  */
 public class DrawingSurface extends PApplet implements JayLayerListener {
 
+	/**
+	 * width of window
+	 */
 	public static final int WIDTH = 800;
+	/**
+	 * height of window
+	 */
 	public static final int HEIGHT = 600;
+	/**
+	 * how often certain actions are carried out
+	 */
 	public static final int TICK_RATE = 5000; // milliseconds between ticks
+	/**
+	 * names of possible organisms to be drawn
+	 */
 	public static final String[] TYPES = {"tree", "moss", "mouse", "bird", "ram"};
 	
-	public ArrayList<Integer> keysHeld;
-	ArrayList<GButton> buttons;
-	public String animalDrawn;
-	public int lastOrganismTick;
+	private ArrayList<Integer> keysHeld;
+	private ArrayList<GButton> buttons;
+	private String animalDrawn;
+	private int lastOrganismTick;
 	
+	/**
+	 * width of the game area
+	 */
 	public int gameAreaWidth;
+	/**
+	 * height of the game area
+	 */
 	public int gameAreaHeight;
+	/**
+	 * a list of obstacles in the game
+	 */
 	public ArrayList<Sprite> obstacles;
-	public HashMap<String, Organism> organisms;
-	public HashMap<String, Organism> allOrganisms;
-	public int totalBerries;
-	public HashMap<String, Player> players;
-	public Player thisPlayer;
-	Sound s = new Sound();
+	private HashMap<String, Organism> organisms;
+	private HashMap<String, Organism> allOrganisms;
+	private int totalBerries;
+	private HashMap<String, Player> players;
+	private Player thisPlayer;
+	private Sound s;
 	
-	public static PImage playerImage;
-	public static PImage obstacleImage;
+	private static PImage playerImage;
+	private static PImage obstacleImage;
+	/**
+	 * a map with organism name corresponding to organism images
+	 */
 	public static HashMap<String, PImage> organismImages;
 
-	public DatabaseReference room;
-	public DatabaseReference thisPlayerRef;
-	public DatabaseReference openRoom;
-	public int playerMax;
+	private DatabaseReference room;
+	private DatabaseReference thisPlayerRef;
+	private DatabaseReference openRoom;
+	private int playerMax;
 	
-	public boolean gameStarted;
+	private boolean gameStarted;
 	
 	/**
 	 * Create a new DrawingSurface which uses a room in the database
@@ -96,6 +120,8 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		room.child("players").addChildEventListener(new PlayerListener());
 		for (int i = 0; i < TYPES.length; i++)
 			room.child("organisms").child(TYPES[i]).addChildEventListener(new OrganismListener(TYPES[i]));
+		
+		s = new Sound();
 		
 		gameStarted = false;
 	}
@@ -154,8 +180,9 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 				orgs.get(i).getRef().setValueAsync(orgs.get(i).getDataObject()); // update organisms
 		}
 		
-		for (Organism o : allOrganisms.values()) {
-			o.update(this);
+		ArrayList<Organism> other = new ArrayList<Organism>(allOrganisms.values());
+		for (int i = 0; i < other.size(); i++) {
+			other.get(i).update(this);
 		}
 		
 		if (hasTicked)

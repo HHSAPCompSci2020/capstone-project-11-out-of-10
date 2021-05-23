@@ -12,15 +12,9 @@ import jay.jaysound.JayLayerListener;
 
 
 /**
-   NOTE:
-   The src folder of this project includes all of the source code files that make this work. However, to use this library, you need only to:
-   
-   1) Grab the jar file from the /dist folder and add it to your project.
-   2) Check out the code in this class for a sample showing how to use the library.
-   3) Looks at the docs in the /doc folder for additional information about the library methods.
-   
-   You do not need to add any of the classes here to your project.
-   
+ * Represents the sound effects of game
+ * @author Timothy Li
+ *
  */
 public class Sound implements JayLayerListener
 {
@@ -28,6 +22,9 @@ public class Sound implements JayLayerListener
 	private JayLayer sound;
 	private boolean first;
 
+	/**
+	 * Constructs different sounds that can be made
+	 */
 	public Sound () {
 
 		first = true;
@@ -53,12 +50,17 @@ public class Sound implements JayLayerListener
 	}
 
 
-
+	/**
+	 * Makes a chomping noise, much like an animal eating
+	 */
 	public void makeEatSound() {
 		sound.changePlayList(0);
 		sound.nextSong();
 	}
 
+	/**
+	 * Makes click noise
+	 */
 	public void makeReproduceSound() {
 		sound.changePlayList(1);
 		sound.nextSong();
