@@ -31,18 +31,31 @@ public class OrganismPost {
 		this.reproductionTimer = reproductionTimer;
 	}
 	
+	/**
+	 * gets x-coordinate of organism
+	 * @return x-coordinate of organism
+	 */
 	public double getX() {
 		return x;
 	}
 	
+	/**
+	 * gets y-coordinate of organism
+	 * @return y-coordinate of organism
+	 */
 	public double getY() {
 		return y;
 	}
 	
+	/**
+	 * gets how often organism has to reproduce in 3s (so if returns 1, it reproduces every 3 seconds)
+	 * @return how fast organism reproduces
+	 */
 	public int getReproductionTimer() {
 		return reproductionTimer;
 	}
 	
+	@Override
 	public String toString() {
 		return "Location: (" + x + ", " + y + ")";
 	}

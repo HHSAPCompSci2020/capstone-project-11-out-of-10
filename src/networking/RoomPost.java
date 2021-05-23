@@ -31,18 +31,31 @@ public class RoomPost {
 		this.playerCount = 0;
 	}
 	
+	/**
+	 * gets name of room
+	 * @return name of room
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * gets maximum player count in room
+	 * @return maximum player count in room
+	 */
 	public int getPlayerMax() {
 		return playerMax;
 	}
 	
+	/**
+	 * gets current number of players in room
+	 * @return current player count
+	 */
 	public int getPlayerCount() {
 		return playerCount;
 	}
 	
+	@Override
 	public String toString() {
 		return "Name: " + name + ", Players: " + playerCount + "/" + playerMax;
 	}
