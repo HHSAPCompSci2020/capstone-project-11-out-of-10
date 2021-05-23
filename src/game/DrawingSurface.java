@@ -172,10 +172,12 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		ArrayList<Organism> orgs = new ArrayList<Organism>(organisms.values());
 		if (hasTicked) {
+			ArrayList<Organism> orgs = new ArrayList<Organism>(organisms.values());
 			for (int i = 0; i < orgs.size(); i++)
 				orgs.get(i).act(this);
+			
+			orgs = new ArrayList<Organism>(organisms.values());
 			for (int i = 0; i < orgs.size(); i++)
 				orgs.get(i).getRef().setValueAsync(orgs.get(i).getDataObject()); // update organisms
 		}
@@ -209,8 +211,9 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		for (Sprite s : obstacles)
 			s.draw(this);
 		
-		for (Organism o : allOrganisms.values())
+		for (Organism o : allOrganisms.values()) {
 			o.draw(this);
+		}
 		
 		for (Player p : players.values())
 			p.draw(this);
@@ -506,7 +509,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
-					
 					if (organisms.containsKey(snap.getKey()))
 						return;
 					
@@ -524,7 +526,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
-					
 					if (organisms.containsKey(snap.getKey()))
 						return;
 					
@@ -545,10 +546,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
-					
-					if (organisms.containsKey(snap.getKey()))
-						return;
-					
+					organisms.remove(snap.getKey());
 					allOrganisms.remove(snap.getKey());
 				}
 			});
