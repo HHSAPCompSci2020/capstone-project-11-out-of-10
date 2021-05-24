@@ -418,6 +418,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		return allOrganisms.values();
 	}
 	
+	/**
+	 * changes DNA by specified amount
+	 * @param changeInDNA the amount DNA changes by
+	 */
 	public void changeDNA(int changeInDNA) {
 		thisPlayer.changeBalance(changeInDNA);
 	}
@@ -433,10 +437,16 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		return Math.sqrt(dx*dx + dy*dy);
 	}
 	
+	/**
+	 * Makes an eating sound effect in the game
+	 */
 	public void makeEatSound() {
 		s.makeEatSound();
 	}
 
+	/**
+	 * makes an click sound (of organism being placed) in the game
+	 */
 	public void makeAnimalPlaceSound() {
 		s.makeReproduceSound();
 	}
