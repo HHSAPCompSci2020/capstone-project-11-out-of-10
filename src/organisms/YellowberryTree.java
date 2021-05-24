@@ -48,6 +48,10 @@ public class YellowberryTree extends Organism {
 		} else return 0;
 	}
 	
+	/**
+	 * Gets amount of berries tree currently has
+	 * @return number of berries in the tree
+	 */
 	public int getBerryCount() {
 		return berryCount;
 	}
