@@ -151,8 +151,16 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		for (GButton b : buttons)
 			b.fireAllEvents(true);
 		
+		obstacles.add(new Sprite(300, 300, 300, 50, obstacleImage));
+		obstacles.add(new Sprite(500, 1000, 200, 150, obstacleImage));
+		obstacles.add(new Sprite(1000, 500, 300, 50, obstacleImage));
+		obstacles.add(new Sprite(1200, 1100, 250, 250, obstacleImage));
+		obstacles.add(new Sprite(300, 300, 1300, 100, obstacleImage));
+		obstacles.add(new Sprite(500, 1000, 1800, 600, obstacleImage));
+		obstacles.add(new Sprite(1000, 500, 2500, 300, obstacleImage));
+		obstacles.add(new Sprite(1200, 1100, 2700, 900, obstacleImage));
+		
 		thisPlayer = new Player(30, 30, playerImage, thisPlayer.getName());
-		obstacles.add(new Sprite(150, 150, 300, 50, obstacleImage));
 		thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
 		
