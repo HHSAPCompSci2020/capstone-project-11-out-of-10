@@ -46,7 +46,7 @@ public abstract class Animal extends Organism {
 	@Override
 	public void update(DrawingSurface game) {
 		if (target != null) {
-			if (game.organisms.containsKey(target.getRef().getKey())) {
+			if (!game.organisms.containsKey(target.getRef().getKey())) {
 				target = null;
 				return;
 			}
