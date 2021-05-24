@@ -29,13 +29,13 @@ public class FluffyRam extends Animal {
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
 		Collection<Organism> o = game.getOrganismList();
+		ArrayList<Organism> mice = new ArrayList<>();
 		for (Organism organism : o) {
-			if (organism instanceof MouseHopper) {
-				target = organism;
-				return true;
-			}
+			if (organism instanceof MouseHopper)
+				mice.add(organism);
 		}
-		return false;
+		target = findClosest(mice);
+		return target != null;
 	}
 
 	@Override

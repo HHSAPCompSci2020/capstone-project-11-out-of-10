@@ -1,5 +1,6 @@
 package organisms;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import game.DrawingSurface;
@@ -26,19 +27,13 @@ public class FlameBird extends Animal{
 	@Override
 	public boolean tryToEat(DrawingSurface game) {
 		Collection<Organism> o = game.getOrganismList();
-			for(Organism organism : o) {
-				if(organism instanceof YellowberryTree && ((YellowberryTree)organism).getBerryCount()>0) {
-					target = organism;
-					return true;
-				}
-			}
-			for(Organism organism : o) {
-				if(organism instanceof GlowingMoss) {
-					target = organism;
-					return true;
-				}
-			}
-		return false;
+		ArrayList<Organism> food = new ArrayList<>();
+		for (Organism organism : o) {
+			if (organism instanceof YellowberryTree || organism instanceof GlowingMoss)
+				food.add(organism);
+		}
+		target = findClosest(food);
+		return target != null;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package organisms;
 
+import java.util.Collection;
+
 import game.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -30,6 +32,7 @@ public abstract class Animal extends Organism {
 	public Animal(double x, double y, double w, double h, PImage image, int reproductionTicks, int cost, int value, int foodValue) {
 		super(x, y, w, h, image, reproductionTicks, cost, value, foodValue);
 		this.foodCount = 2;
+		this.target = null;
 		wander();
 	}
 	
@@ -73,8 +76,28 @@ public abstract class Animal extends Organism {
 		super.act(game);
 	}
 	
+	/**
+	 * Causes the animal to move in a random direction at a speed of 0.5
+	 */
 	public void wander() {
-		movePolar(Math.random()*2*Math.PI, 0.3);
+		movePolar(Math.random()*2*Math.PI, 0.5);
+	}
+	
+	/**
+	 * @param organisms List of all organisms to be checked
+	 * @return Whichever organism is closest to this one
+	 */
+	public Organism findClosest(Collection<Organism> organisms) {
+		double minDistance = Double.MAX_VALUE;
+		Organism closest = null;
+		for (Organism o : organisms) {
+			double dist = DrawingSurface.distance(o, this);
+			if (dist < minDistance) {
+				minDistance = dist;
+				closest = o;
+			}
+		}
+		return closest;
 	}
 	
 }

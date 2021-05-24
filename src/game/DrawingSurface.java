@@ -48,7 +48,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	/**
 	 * how often certain actions are carried out
 	 */
-	public static final int TICK_RATE = 5000; // milliseconds between ticks
+	public static final int TICK_RATE = 3000; // milliseconds between ticks
 	/**
 	 * names of possible organisms to be drawn
 	 */
@@ -436,7 +436,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * @param b Second Sprite
 	 * @return Distance between the Sprites
 	 */
-	public double distance(Sprite a, Sprite b) {
+	public static double distance(Sprite a, Sprite b) {
 		double dx = a.getX() - b.getX();
 		double dy = a.getY() - b.getY();
 		return Math.sqrt(dx*dx + dy*dy);
