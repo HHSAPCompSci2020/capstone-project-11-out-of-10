@@ -194,7 +194,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		if (hasTicked) {
 			// calculate current player score
 			int newScore = 0;
-			for (Organism o : getOrganismList()) {
+			for (Organism o : organisms.values()) {
 				if (o instanceof Animal)
 					newScore++;
 			}
