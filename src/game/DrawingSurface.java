@@ -54,6 +54,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * names of possible organisms to be drawn
 	 */
 	public static final String[] TYPES = {"tree", "moss", "mouse", "bird", "ram"};
+	private static final String[] TYPE_NAMES = {"Yellowberry Tree", "Glowing Moss", "Mouse Hopper", "Flame Bird", "Fluffy Ram"};
 	
 	private ArrayList<Integer> keysHeld;
 	private ArrayList<GButton> buttons;
@@ -97,7 +98,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * Create a new DrawingSurface which uses a room in the database
 	 * @param room The DatabaseReference for the room the player is in
 	 */
-	public DrawingSurface(DatabaseReference openRoom, DatabaseReference room, int playerMax) {
+	public DrawingSurface(DatabaseReference openRoom, DatabaseReference room, int playerMax, String playerName) {
 		keysHeld = new ArrayList<Integer>();
 		animalDrawn = null;
 		String[] soundEffects = new String[]{"title1.mp3","title2.mp3","title3.mp3","title4.mp3","title5.mp3"};
@@ -116,6 +117,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		this.room = room;
 		this.playerMax = playerMax;
 		thisPlayerRef = room.child("players").push();
+		thisPlayer = new Player(0, 0, null, playerName);
 		
 		room.child("players").addChildEventListener(new PlayerListener());
 		for (int i = 0; i < TYPES.length; i++)
@@ -136,15 +138,15 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		organismImages.put("bird", loadImage("flame_bird.png"));
 		organismImages.put("ram", loadImage("fluffy_ram.png"));
 		
-		buttons.add(new GButton(this, 40,  500, 80, 30, "Yellowberry Tree"));
-		buttons.add(new GButton(this, 190, 500, 80, 30, "Glowing Moss"));
-		buttons.add(new GButton(this, 340, 500, 80, 30, "Mouse Hopper"));
-		buttons.add(new GButton(this, 490, 500, 80, 30, "Flame Bird"));
-		buttons.add(new GButton(this, 640, 500, 80, 30, "Fluffy Ram"));
+		buttons.add(new GButton(this, 40,  500, 80, 30, TYPE_NAMES[0]));
+		buttons.add(new GButton(this, 190, 500, 80, 30, TYPE_NAMES[1]));
+		buttons.add(new GButton(this, 340, 500, 80, 30, TYPE_NAMES[2]));
+		buttons.add(new GButton(this, 490, 500, 80, 30, TYPE_NAMES[3]));
+		buttons.add(new GButton(this, 640, 500, 80, 30, TYPE_NAMES[4]));
 		for (GButton b : buttons)
 			b.fireAllEvents(true);
 		
-		thisPlayer = new Player(30, 30, playerImage);
+		thisPlayer = new Player(30, 30, playerImage, thisPlayer.getName());
 		obstacles.add(new Sprite(150, 150, 300, 50, obstacleImage));
 		thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
@@ -222,8 +224,16 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		popMatrix();
 		
 		// ALL UI ELEMENTS DRAW BELOW HERE
-		
-		String text = "Animal selected: " + animalDrawn + "     coins: " + thisPlayer.getBalance();
+		int index = -1;
+		for (int i = 0; i < TYPES.length; i++) {
+			if (TYPES[i] == animalDrawn)
+				index = i;
+		}
+		String text;
+		if (index == -1)
+			text = "Organism selected: None,     DNA: " + thisPlayer.getBalance();
+		else
+			text = "Organism selected: " + TYPE_NAMES[index] + ",     DNA: " + thisPlayer.getBalance();
 		fill(0);
 		text(text, 10, 20);
 	}
@@ -429,7 +439,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 					if (snap.getRef().equals(thisPlayerRef))
 						return;
 					
-					Player p = new Player(0, 0, playerImage);
+					Player p = new Player(0, 0, playerImage, "");
 					p.matchPost(snap.getValue(PlayerPost.class));
 					players.put(snap.getRef().getKey(), p);
 				}

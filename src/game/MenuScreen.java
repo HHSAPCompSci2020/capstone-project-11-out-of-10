@@ -155,6 +155,11 @@ public class MenuScreen extends JPanel  {
 				if (!snap.hasChildren() || openRoomToJoin == null)
 					return;
 				
+				String playerName = JOptionPane.showInputDialog("Pick a player name:");
+				while (playerName == null || playerName == "") {
+					playerName = JOptionPane.showInputDialog("Invalid name. Try again:");
+				}
+				
 				DataSnapshot room = snap.getChildren().iterator().next();
 				RoomPost post = room.getValue(RoomPost.class);
 				
@@ -162,7 +167,7 @@ public class MenuScreen extends JPanel  {
 				
 				MenuScreen.this.window.setVisible(false);
 				
-				DrawingSurface drawing = new DrawingSurface(openRoomToJoin, room.getRef(), post.getPlayerMax());
+				DrawingSurface drawing = new DrawingSurface(openRoomToJoin, room.getRef(), post.getPlayerMax(), playerName);
 				PApplet.runSketch(new String[]{""}, drawing);
 				
 				PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();

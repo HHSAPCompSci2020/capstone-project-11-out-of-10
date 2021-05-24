@@ -11,6 +11,7 @@ public class PlayerPost {
 	
 	private double balance;
 	private double x, y;
+	private String name;
 	
 	/**
 	 * Creates a new post with default values of zero
@@ -25,10 +26,11 @@ public class PlayerPost {
 	 * @param x X position of the Player
 	 * @param y Y position of the Player
 	 */
-	public PlayerPost(double balance, double x, double y) {
+	public PlayerPost(double balance, double x, double y, String name) {
 		this.balance = balance;
 		this.x = x;
 		this.y = y;
+		this.name = name;
 	}
 	
 	public double getBalance() {
@@ -43,7 +45,11 @@ public class PlayerPost {
 		return y;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public String toString() {
-		return "Balance: " + balance + ", Location: (" + x + ", " + y + ")";
+		return "Player \"" + name + "\" with balance: " + balance + ", at location: (" + x + ", " + y + ")";
 	}
 }

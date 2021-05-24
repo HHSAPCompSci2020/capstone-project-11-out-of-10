@@ -2,6 +2,7 @@ package sprite;
 
 import game.DrawingSurface;
 import networking.PlayerPost;
+import processing.core.PApplet;
 import processing.core.PImage;
 
 /**
@@ -29,6 +30,7 @@ public class Player extends Sprite {
 	
 	private double balance;
 	private boolean hasChanged;
+	private String name;
 	
 	/**
 	 * Creates a new Player with starting position and graphics.
@@ -36,9 +38,10 @@ public class Player extends Sprite {
 	 * @param y The y-position to start
 	 * @param image The graphic for the Player
 	 */
-	public Player(int x, int y, PImage image) { 
+	public Player(int x, int y, PImage image, String name) { 
 		super(x, y, WIDTH, HEIGHT, image);
 		this.balance = 300;
+		this.name = name;
 	}
 	
 	@Override
@@ -80,6 +83,15 @@ public class Player extends Sprite {
 		rect.y = Math.max(0, Math.min(rect.y, game.gameAreaHeight - rect.height));
 	}
 	
+	@Override
+	public void draw(PApplet drawing) {
+		super.draw(drawing);
+		drawing.pushStyle();
+		drawing.fill(0);
+		drawing.text(name, (float) (rect.x), (float) (rect.y - 15));
+		drawing.popStyle();
+	}
+	
 	/**
 	 * Changes current the balance of the player
 	 * @param change amount the balance changes by
@@ -104,12 +116,16 @@ public class Player extends Sprite {
 		return hasChanged;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	/**
 	 * Gets the data object which corresponds to the Player's current state
 	 * @return A new PlayerPost with correct fields
 	 */
 	public PlayerPost getDataObject() {
-		return new PlayerPost(balance, rect.x, rect.y);
+		return new PlayerPost(balance, rect.x, rect.y, name);
 	}
 	
 	/**
@@ -119,6 +135,7 @@ public class Player extends Sprite {
 	public void matchPost(PlayerPost post) {
 		setLocation(post.getX(), post.getY());
 		balance = post.getBalance();
+		name = post.getName();
 	}
 	
 }
