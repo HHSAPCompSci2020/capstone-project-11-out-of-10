@@ -21,7 +21,6 @@ import networking.AnimalPost;
 import networking.OrganismPost;
 import networking.PlayerPost;
 import networking.TreePost;
-import organisms.Organism;
 import organisms.*;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -59,7 +58,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	private ArrayList<Integer> keysHeld;
 	private ArrayList<GButton> buttons;
 	private String animalDrawn;
-	private int lastOrganismTick;
+	private int lastTick;
 	
 	/**
 	 * width of the game area
@@ -92,7 +91,11 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	private DatabaseReference openRoom;
 	private int playerMax;
 	
+	private static final int GAME_LENGTH = 10000; // 3*60*1000; // 3 minutes
 	private boolean gameStarted;
+	private boolean gameFinished;
+	private int gameStartTime;
+	private String winners;
 	
 	/**
 	 * Create a new DrawingSurface which uses a room in the database
@@ -103,8 +106,8 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		animalDrawn = null;
 		String[] soundEffects = new String[]{"title1.mp3","title2.mp3","title3.mp3","title4.mp3","title5.mp3"};
 		
-		gameAreaWidth = 5000;
-		gameAreaHeight = 3000;
+		gameAreaWidth = 3000;
+		gameAreaHeight = 1500;
 		
 		obstacles = new ArrayList<>();
 		buttons = new ArrayList<>();
@@ -126,6 +129,9 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		s = new Sound();
 		
 		gameStarted = false;
+		gameStartTime = 0;
+		gameFinished = false;
+		winners = "";
 	}
 	
 	@Override
@@ -168,34 +174,61 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * Updates all players and organisms. Called every frame.
 	 */
 	public void update() {
-		boolean hasTicked = this.millis() > this.lastOrganismTick + TICK_RATE;
+		if (gameStarted && millis() > gameStartTime + GAME_LENGTH) {
+			gameFinished = true;
+			double maxScore = thisPlayer.getScore();
+			for (Player p : players.values()) {
+				if (p.getScore() > maxScore)
+					maxScore = p.getScore();
+			}
+			if (thisPlayer.getScore() >= maxScore)
+				winners += thisPlayer.getName() + "\n";
+			for (Player p : players.values()) {
+				if (p.getScore() >= maxScore)
+					winners += p.getName() + "\n";
+			}
+		}
+		
+		boolean hasTicked = millis() > lastTick + TICK_RATE;
+		
+		if (hasTicked) {
+			// calculate current player score
+			int newScore = 0;
+			for (Organism o : getOrganismList()) {
+				if (o instanceof Animal)
+					newScore++;
+			}
+			thisPlayer.setScore(newScore);
+		}
 		
 		thisPlayer.update(this);
 		if (thisPlayer.hasChanged() || hasTicked)
 			thisPlayerRef.setValueAsync(thisPlayer.getDataObject());
 		
-		if (hasTicked) {
-			ArrayList<Organism> orgs = new ArrayList<Organism>(organisms.values());
-			for (int i = 0; i < orgs.size(); i++)
-				orgs.get(i).act(this);
+		if (gameStarted) {
+			if (hasTicked) {
+				ArrayList<Organism> orgs = new ArrayList<Organism>(organisms.values());
+				for (int i = 0; i < orgs.size(); i++)
+					orgs.get(i).act(this);
+				
+				orgs = new ArrayList<Organism>(organisms.values());
+				for (int i = 0; i < orgs.size(); i++)
+					orgs.get(i).getRef().setValueAsync(orgs.get(i).getDataObject()); // update organisms
+			}
 			
-			orgs = new ArrayList<Organism>(organisms.values());
-			for (int i = 0; i < orgs.size(); i++)
-				orgs.get(i).getRef().setValueAsync(orgs.get(i).getDataObject()); // update organisms
+			ArrayList<Organism> other = new ArrayList<Organism>(allOrganisms.values());
+			for (int i = 0; i < other.size(); i++) {
+				other.get(i).update(this);
+			}
 		}
-		
-		ArrayList<Organism> other = new ArrayList<Organism>(allOrganisms.values());
-		for (int i = 0; i < other.size(); i++) {
-			other.get(i).update(this);
-		}
-		
 		if (hasTicked)
-			lastOrganismTick = this.millis();
+			lastTick = this.millis();
 	}
 
 	@Override
 	public void draw() {
-		update();
+		if (!gameFinished)
+			update();
 		
 		background(150, 150, 150);
 		
@@ -230,12 +263,35 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 				index = i;
 		}
 		String text;
-		if (index == -1)
-			text = "Organism selected: None,     DNA: " + thisPlayer.getBalance();
+		if (index < 0)
+			text = "Organism selected: None\n";
 		else
-			text = "Organism selected: " + TYPE_NAMES[index] + ",     DNA: " + thisPlayer.getBalance();
+			text = "Organism selected: " + TYPE_NAMES[index];
+		text += "\nDNA: " + thisPlayer.getBalance() + "\nScore: " + thisPlayer.getScore();
+		
+		String otherInfo = "Other Players' Scores:\n";
+		for (Player p : players.values()) {
+			otherInfo += p.getScore() + "\n";
+		}
+		pushStyle();
 		fill(0);
 		text(text, 10, 20);
+		text(otherInfo, 10, 80);
+		if (!gameStarted) {
+			fill(100, 100);
+			rect(0, 0, WIDTH, HEIGHT);
+			textSize(30);
+			fill(0);
+			text("Waiting for players...", 300, 200);
+		}
+		if (gameFinished) {
+			fill(100, 100);
+			rect(0, 0, WIDTH, HEIGHT);
+			textSize(30);
+			fill(0);
+			text("Winner(s):\n" + winners, 300, 100);
+		}
+		popStyle();
 	}
 	
 	/**
@@ -289,6 +345,8 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	
 	@Override
 	public void mousePressed() {
+		if (!gameStarted)
+			return;
 		if (animalDrawn != null) {
 			Point2D.Double newLocation = windowToGameField(mouseX, mouseY);
 			
@@ -309,6 +367,8 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * @param event The event of the button
 	 */
 	public void handleButtonEvents(GButton button, GEvent event) {
+		if (!gameStarted)
+			return;
 		if (event == GEvent.CLICKED) {
 			for (int i = 0; i < buttons.size(); i++) {
 				if (button == buttons.get(i))
@@ -436,12 +496,16 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			tasks.add(new Runnable() {
 				@Override
 				public void run() {
-					if (snap.getRef().equals(thisPlayerRef))
-						return;
+					if (!snap.getRef().equals(thisPlayerRef)) {
+						Player p = new Player(0, 0, playerImage, "");
+						p.matchPost(snap.getValue(PlayerPost.class));
+						players.put(snap.getRef().getKey(), p);
+					}
 					
-					Player p = new Player(0, 0, playerImage, "");
-					p.matchPost(snap.getValue(PlayerPost.class));
-					players.put(snap.getRef().getKey(), p);
+					if (players.size() + 1 >= playerMax) {
+						gameStarted = true;
+						gameStartTime = millis();
+					}
 				}
 			});
 		}

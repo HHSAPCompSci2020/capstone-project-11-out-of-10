@@ -31,6 +31,7 @@ public class Player extends Sprite {
 	private double balance;
 	private boolean hasChanged;
 	private String name;
+	private double score;
 	
 	/**
 	 * Creates a new Player with starting position and graphics.
@@ -42,6 +43,7 @@ public class Player extends Sprite {
 		super(x, y, WIDTH, HEIGHT, image);
 		this.balance = 300;
 		this.name = name;
+		this.score = 0;
 	}
 	
 	@Override
@@ -125,7 +127,7 @@ public class Player extends Sprite {
 	 * @return A new PlayerPost with correct fields
 	 */
 	public PlayerPost getDataObject() {
-		return new PlayerPost(balance, rect.x, rect.y, name);
+		return new PlayerPost(balance, rect.x, rect.y, name, score);
 	}
 	
 	/**
@@ -136,6 +138,22 @@ public class Player extends Sprite {
 		setLocation(post.getX(), post.getY());
 		balance = post.getBalance();
 		name = post.getName();
+		score = post.getScore();
+	}
+
+	/**
+	 * Sets the score of this Player
+	 * @param new score
+	 */
+	public void setScore(double score) {
+		this.score = score;
+	}
+	
+	/**
+	 * @return Current score of this player
+	 */
+	public double getScore() {
+		return score;
 	}
 	
 }

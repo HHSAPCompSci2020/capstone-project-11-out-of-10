@@ -190,7 +190,7 @@ public class MenuScreen extends JPanel  {
 		});
 		
 	}
-	
+	/*
 	public void leaveRoom(DatabaseReference gameRoom) {
 		
 		gameRoom.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,6 +224,7 @@ public class MenuScreen extends JPanel  {
 			}
 		});
 	}
+	*/
 	
 	/**
 	 * Listens to changes in room information (new rooms added, number of players changes)
