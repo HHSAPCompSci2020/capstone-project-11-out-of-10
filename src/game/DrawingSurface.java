@@ -91,7 +91,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	private DatabaseReference openRoom;
 	private int playerMax;
 	
-	private static final int GAME_LENGTH = 10000; // 3*60*1000; // 3 minutes
+	private static final int GAME_LENGTH = 3*60*1000; // 3 minutes
 	private boolean gameStarted;
 	private boolean gameFinished;
 	private int gameStartTime;
