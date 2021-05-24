@@ -72,7 +72,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 * a list of obstacles in the game
 	 */
 	public ArrayList<Sprite> obstacles;
-	private HashMap<String, Organism> organisms;
+	public HashMap<String, Organism> organisms;
 	private HashMap<String, Organism> allOrganisms;
 	private HashMap<String, Player> players;
 	private Player thisPlayer;
@@ -155,10 +155,10 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		obstacles.add(new Sprite(500, 1000, 200, 150, obstacleImage));
 		obstacles.add(new Sprite(1000, 500, 300, 50, obstacleImage));
 		obstacles.add(new Sprite(1200, 1100, 250, 250, obstacleImage));
-		obstacles.add(new Sprite(300, 300, 1300, 100, obstacleImage));
-		obstacles.add(new Sprite(500, 1000, 1800, 600, obstacleImage));
-		obstacles.add(new Sprite(1000, 500, 2500, 300, obstacleImage));
-		obstacles.add(new Sprite(1200, 1100, 2700, 900, obstacleImage));
+		obstacles.add(new Sprite(1300, 100, 300, 50, obstacleImage));
+		obstacles.add(new Sprite(1800, 600, 200, 150, obstacleImage));
+		obstacles.add(new Sprite(2500, 300, 300, 50, obstacleImage));
+		obstacles.add(new Sprite(2700, 900, 250, 250, obstacleImage));
 		
 		thisPlayer = new Player(30, 30, playerImage, thisPlayer.getName());
 		thisPlayerRef.setValueAsync(thisPlayer.getDataObject());

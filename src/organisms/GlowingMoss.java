@@ -22,9 +22,11 @@ public class GlowingMoss extends Organism{
 
 	@Override
 	public void reproduce(DrawingSurface game) {
-		Organism baby = new GlowingMoss(getX(), getY(), image);
-		findReproduceLocation(game, baby);
-		game.add(baby);
+		if (game.organisms.values().size() > 500) {
+			Organism baby = new GlowingMoss(getX(), getY(), image);
+			findReproduceLocation(game, baby);
+			game.add(baby);
+		}
 	}
 	
 }

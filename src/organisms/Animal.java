@@ -46,7 +46,11 @@ public abstract class Animal extends Organism {
 	@Override
 	public void update(DrawingSurface game) {
 		if (target != null) {
-			if (game.distance(this, target) < 10) {
+			if (game.organisms.containsKey(target.getRef().getKey())) {
+				target = null;
+				return;
+			}
+			if (DrawingSurface.distance(this, target) < 10) {
 				velocityX = 0;
 				velocityY = 0;
 				foodCount += target.getEaten(game);
