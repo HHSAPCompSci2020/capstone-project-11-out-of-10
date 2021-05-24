@@ -74,7 +74,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	public ArrayList<Sprite> obstacles;
 	private HashMap<String, Organism> organisms;
 	private HashMap<String, Organism> allOrganisms;
-	private int totalBerries;
 	private HashMap<String, Player> players;
 	private Player thisPlayer;
 	private Sound s;
@@ -91,7 +90,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	private DatabaseReference openRoom;
 	private int playerMax;
 	
-	private static final int GAME_LENGTH = 10000; // 3*60*1000; // 3 minutes
+	private static final int GAME_LENGTH = 3*60*1000; // 3 minutes
 	private boolean gameStarted;
 	private boolean gameFinished;
 	private int gameStartTime;
@@ -417,14 +416,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	 */
 	public Collection<Organism> getOrganismList() {
 		return allOrganisms.values();
-	}
-	
-	public int getTotalBerries() {
-		return totalBerries;
-	}
-	
-	public void setTotalBerries(int newTotal) {
-		totalBerries = newTotal;
 	}
 	
 	public void changeDNA(int changeInDNA) {

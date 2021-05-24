@@ -309,9 +309,9 @@ public class MenuScreen extends JPanel  {
 				
 				int playerMax;
 				try {
-					playerMax = Integer.valueOf(JOptionPane.showInputDialog("Maximum Players?"));
+					playerMax = Integer.valueOf(JOptionPane.showInputDialog("Number of Players:"));
 					if (playerMax < 1) {
-						JOptionPane.showMessageDialog(MenuScreen.this, "Invalid number: must be greater than 1.");
+						JOptionPane.showMessageDialog(MenuScreen.this, "Invalid number: must be greater than 0.");
 						return;
 					}
 				} catch (NumberFormatException exception) {
