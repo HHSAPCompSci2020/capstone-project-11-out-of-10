@@ -596,9 +596,13 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 						return;
 					
 					OrganismPost post = getPost(snap);
+					if (post == null)
+						return;
 					Organism o = Organism.createOrganismFromPost(type, post, DrawingSurface.this);
-					o.setDataRef(snap.getRef());
-					allOrganisms.put(snap.getKey(), o);
+					if (o != null) {
+						o.setDataRef(snap.getRef());
+						allOrganisms.put(snap.getKey(), o);
+					}
 				}
 			});
 			
@@ -613,7 +617,9 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 						return;
 					
 					OrganismPost post = getPost(snap);
-					allOrganisms.get(snap.getKey()).matchPost(post);
+					Organism o = allOrganisms.get(snap.getKey());
+					if (o != null)
+						o.matchPost(post);
 				}
 			});
 		}
