@@ -70,7 +70,7 @@ public abstract class Animal extends Organism {
 				wander(); // when it fails eating wander randomly
 			
 			if (foodCount < 0) {
-				System.out.println("No food for " + this);
+				//System.out.println("No food for " + this);
 				this.remove(game);
 			}
 		} else {
